@@ -1,6 +1,6 @@
 # Wholesome Series Videos Discord Bot
 
-Thanks to @ZappiestSet81 for CJ.py codes, Love you Homie :heart:
+Thanks to [Zap](https://github.com/ZappiestSet81) for Collaborations on CJ.py codes, Love you Homie :heart:
 
 ![cj](cj.png)
 
