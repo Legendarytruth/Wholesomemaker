@@ -1,5 +1,8 @@
 # Wholesome Series Videos Discord Bot
 
+[![CJ.py](https://github.com/GNZTMPZ/cj/actions/workflows/cj.py.yml/badge.svg)](https://github.com/GNZTMPZ/cj/actions/workflows/cj.py.yml)
+[![CJ.js](https://github.com/GNZTMPZ/cj/actions/workflows/cj.js.yml/badge.svg)](https://github.com/GNZTMPZ/cj/actions/workflows/cj.js.yml) 
+
 Thanks to [Zap](https://github.com/ZappiestSet81) for Collaborations on CJ.py codes, Love you Homie :heart:
 
 ![cj](cj.png)
