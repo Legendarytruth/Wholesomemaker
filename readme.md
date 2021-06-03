@@ -1,12 +1,8 @@
 # Wholesome Series Videos Discord Bot
 
-[![Carl-Johnson.py](https://github.com/GNZTMPZ/CJ.py/actions/workflows/python-app.yml/badge.svg)](https://github.com/GNZTMPZ/CJ.py/actions/workflows/python-app.yml)
-[![CJ.py-Voice](https://github.com/GNZTMPZ/cj.py-voice/actions/workflows/CJ.py-Voice.yml/badge.svg)](https://github.com/GNZTMPZ/cj.py-voice/actions/workflows/CJ.py-Voice.yml)
-[![Carl-Johnson.js](https://github.com/GNZTMPZ/CJ.js/actions/workflows/node.js.yml/badge.svg)](https://github.com/GNZTMPZ/CJ.js/actions/workflows/node.js.yml)
+Thanks to [Zap](https://github.com/ZappiestSet81) for Collaborations on Samantha.py codes, Love you Homie :heart:
 
-Thanks to [Zap](https://github.com/ZappiestSet81) for Collaborations on CJ.py codes, Love you Homie :heart:
-
-![cj](cj.png)
+![sam](sam.png)
 
 ## Development
 
