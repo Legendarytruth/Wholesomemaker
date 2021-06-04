@@ -9,7 +9,7 @@ Thanks to [Zap](https://github.com/ZappiestSet81) for Collaborations on Samantha
 This project is open to anyone who wants to contribute, large or small! Whether you noticed a typo or want to add a
 whole new feature, go for it!
 
-Large additions should be discussed in issues or on Discord first. If you're new to Javascript and Python, ask me on Discord for where to start and you can use CJ as a starting point for a contribution.
+Large additions should be discussed in issues or on Discord first. If you're new to Javascript and Python, ask me on Discord for where to start and you can use Samantha as a starting point for a contribution.
 
 ### How to use it?
 
