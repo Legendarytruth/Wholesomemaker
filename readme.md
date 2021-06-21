@@ -1,5 +1,7 @@
 ## Wholesome Series Videos Discord Server Bots
 
+[![build](https://github.com/GNZTMPZ/Samantha/actions/workflows/build.yml/badge.svg)](https://github.com/GNZTMPZ/Samantha/actions/workflows/build.yml)
+
 Thanks to [Zap](https://github.com/ZappiestSet81) for Collaborations on Samantha.py codes, Love you Homie :heart:
 
 and Special Thanks to [🐧 rsetiawan7](https://github.com/rsetiawan7) for Collaborations on Samantha.py as Docker Guru.
