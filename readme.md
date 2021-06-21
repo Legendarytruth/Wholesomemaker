@@ -22,7 +22,7 @@ To run the app, you need:
 - A Discord Bot, with `server member intent` and `presence intent`.. obviously.. [click here](https://discord.com/developers/applications)
 - A Discord server to test - you can't use the Wholesome Series Videos Discord Server to do tests
 - [Python version 3.8.6](https://www.python.org/downloads/release/python-386/)
-- _This is optional_, A MongoDB for levelling system (Pick one)
+- A MongoDB Server for levelling and warning system (Pick one)
   - [MongoDB Community Server (Offline)](https://www.mongodb.com/try/download/community)
   - [MongoDB Atlas (Online)](https://www.mongodb.com/cloud/atlas)
 - A Good Code IDE, obviously.. I recommend you [Visual Studio Code](https://code.visualstudio.com)
