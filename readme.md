@@ -29,7 +29,16 @@ To run the app, you need:
 
 If you don't own/admin a Discord server, creating one is simple, you can do it from the same menu you join discord servers from.
 
-### Installing
+### Docker
+
+Thanks to [🐧 rsetiawan7](https://github.com/rsetiawan7), Samantha Supports running on Docker. but.. the Active Docker Images has been used for Production Purposes as a Private Repository. 
+
+You "could" technically run it on Docker, I have provide you the essence of it (Dockerfile and github actions settings). 
+
+I assume you already know how to do it, Please Refer to `Docker` folder to Getting Started. Thanks. 😉
+
+
+### Normal Install
 
 - first, you need to install the Python and MongoDB (Optional)
   you can see the docs for [python](https://docs.python.org/3/using/windows.html) and [mongodb](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
