@@ -1,5 +1,8 @@
 import discord
+import discord_slash.cog_ext
 from discord.ext import commands
+from discord_slash import *
+from discord_slash.utils.manage_commands import create_option
 from discord import Embed
 from typing import Optional
 import datetime
@@ -10,8 +13,8 @@ class serverinfo(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(aliases=['si'])
-    async def serverinfo(self, ctx):
+    @cog_ext.cog_slash(name="serverinfo", description="Provide you with this Server Info.")
+    async def serverinfo(self, ctx: SlashContext):
         name = str(ctx.guild.name)
         owner = str(ctx.guild.owner_id)
         id = str(ctx.guild.id)
