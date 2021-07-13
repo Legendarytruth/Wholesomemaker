@@ -1,5 +1,8 @@
 import discord
+import discord_slash.cog_ext
 from discord.ext import commands
+from discord_slash import *
+from discord_slash.utils.manage_commands import create_option
 from discord import Embed
 from typing import Optional
 import datetime
@@ -11,11 +14,16 @@ class kiss(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
-    async def kiss(self, ctx, *, member: discord.Member = None):
-
-        if member is None:
-            member = ctx.author
+    @cog_ext.cog_slash(name="kiss",
+                       description="Kiss someone OwO",
+                       options=[
+                           create_option(
+                               name="member",
+                               description="Who is the Person?",
+                               option_type=6,
+                               required=True
+                           )])
+    async def kiss(self, ctx: SlashContext, *, member: discord.Member):
 
         async with aiohttp.ClientSession() as session:
             # Make a request
