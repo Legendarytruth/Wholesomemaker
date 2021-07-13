@@ -1,5 +1,8 @@
 import discord
+import discord_slash.cog_ext
 from discord.ext import commands
+from discord_slash import *
+from discord_slash.utils.manage_commands import create_option
 from discord import Embed
 from typing import Optional
 import datetime
@@ -11,11 +14,20 @@ class pat(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
-    async def pat(self, ctx, *, member: discord.Member = None):
+    @cog_ext.cog_slash(name="pat",
+                       description="Pat Someone OwO",
+                       options=[
+                           create_option(
+                               name="member",
+                               description="Who is the Person?",
+                               option_type=6,
+                               required=False
+                           )
+                       ])
+    async def pat(self, ctx: SlashContext, *, member: discord.Member = None):
 
         if member is None:
-            member = ctx.author
+            return await ctx.send(":neutral_face: W.. wait, You can't pat yourself.. \n How ruud you are -_-")
 
         async with aiohttp.ClientSession() as session:
             # Make a request
