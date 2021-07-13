@@ -1,5 +1,8 @@
 import discord
+import discord_slash.cog_ext
 from discord.ext import commands
+from discord_slash import *
+from discord_slash.utils.manage_commands import create_option
 from discord import Embed
 from typing import Optional
 import datetime
@@ -11,8 +14,8 @@ class sad(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command()
-    async def sad(self, ctx):
+    @cog_ext.cog_slash(name="sad", description="😭😭")
+    async def sad(self, ctx: SlashContext):
         async with aiohttp.ClientSession() as session:
             # Make a request
             request = await session.get('https://neko-love.xyz/api/v1/cry')
