@@ -1,15 +1,30 @@
 import os
 import random
 import discord
+import discord_slash.cog_ext
 from discord.ext import commands
+from discord_slash import *
+from discord_slash.utils.manage_commands import create_option
+import functools
+import asyncio
+import io
 
 
 class bigemote(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    @commands.command(aliases=['bigemoji', 'be'])
-    async def bigemote(self, ctx, emoji):
+    @cog_ext.cog_slash(name="bigemote",
+                       description="Make a Emoji Bigger.",
+                       options=[
+                           create_option(
+                               name="emoji",
+                               description="Please Provide the Emoji.",
+                               option_type=3,
+                               required=True
+                           )
+                       ])
+    async def bigemote(self, ctx: SlashContext, emoji):
         try:
             if emoji[0] == '<':
                 name = emoji.split(':')[1]
@@ -34,7 +49,7 @@ class bigemote(commands.Cog):
                 kwargs = {'parent_width': 1024, 'parent_height': 1024}
                 convert = False
                 task = functools.partial(
-                    bigEmote.generate, img, convert, **kwargs)
+                    bigemote.generate, img, convert, **kwargs)
                 task = self.bot.loop.run_in_executor(None, task)
                 try:
                     img = await asyncio.wait_for(task, timeout=15)
