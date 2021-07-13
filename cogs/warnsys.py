@@ -1,26 +1,31 @@
 import discord
+import discord_slash.cog_ext
 from discord.ext import commands
 from pymongo import MongoClient
 from discord.ext.commands import cooldown, BucketType
+from discord_slash import *
+from discord_slash.utils.manage_commands import create_option
 
 cluster = MongoClient(
-    "your mongodb databases")
+    "your mongodb uri")
 
 warning = cluster["discord"]["warning"]
 mute = cluster["discord"]["muted"]
 kicks = cluster["discord"]["kicks"]
 
+# talk_channels is the most used channel (which in this case is all channels in Wholesome Series Videos)
 talk_channels = [818815530647158784, 818815613266952193, 808958457855344640, 837680350716362814, 815213963871911996, 828968512146898954, 839444297542533140, 825272629559951390,
                  826078465781661736, 826078419888242708, 837720268918882305, 837665514654138480, 829866889937289257, 824809146641154130, 834312211454754826, 834312245571747842,
                  817712543795249182, 816763959931043861]
 
-bot_channel = 812211967095472149
+bot_channel = 808958457855344640  # leaderboards channel (for check warnings)
 
 
 class warnsys(commands.Cog):
     def __init__(self, client):
         self.client = client
 
+# this cog.listener is to log all people warn count, based on sending a message. there is no problem at all.. move along folks :)
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.channel.id in talk_channels:
@@ -41,15 +46,29 @@ class warnsys(commands.Cog):
                                "kickcount": 0, "reason": 0}
                     kicks.insert_one(newuser)
 
-    @commands.command()
-    @commands.has_permissions(view_audit_log=True)
-    async def warn(self, ctx, member: discord.Member = None, *, reason: str):
+    @cog_ext.cog_slash(name="warn",
+                       description="Give a User some Warnings.",
+                       options=[
+                           create_option(
+                               name="member",
+                               description="Who is the Person Wants to be Warned?",
+                               option_type=6,
+                               required=True
+                           ),
+                           create_option(
+                               name="reason",
+                               description="Provide the reason.",
+                               option_type=4,
+                               required=False
+                           )
+                       ])
+    @commands.has_role(825578057498099732)  # operator role (moderators)
+    async def warn(self, ctx: SlashContext, member: discord.Member = None, *, reason: str = None):
 
-        if member is None:
-            ctx.send(
-                f"<:cross:839158779815657512> {ctx.author} You can't warn yourself.")
+        if reason is None:
+            reason = ("No Reason Provided.")
 
-        if member == ctx.guild.owner:
+        if member == 351147060956889088:  # GNZTMPZ UserID (server owner)
             ctx.send(
                 f"<:cross:839158779815657512> {ctx.author} You can't warn Server Owner.")
 
@@ -57,6 +76,7 @@ class warnsys(commands.Cog):
         if stats is None:
             warning.insert_one(
                 {"id": member.id, "warncount": 1, "reason": reason})
+            # send warn logs to #server-logs
             channel = self.client.get_channel(831215570631393392)
             embed = discord.Embed(
                 description=f"<:check:839158727512293406> **{ctx.author.mention}** warns **{member.mention}** for following reason : {reason}", colour=discord.Colour.green())
@@ -66,15 +86,32 @@ class warnsys(commands.Cog):
             warncount = stats["warncount"] + 1
             warning.update_one({"id": member.id}, {"$set": {
                 "warncount": warncount, "reason": reason}})
+            # send warn logs to #server-logs
             channel = self.client.get_channel(831215570631393392)
             embed = discord.Embed(
                 description=f"<:check:839158727512293406> **{ctx.author.mention}** warns **{member.mention}** for following reason : {reason}", colour=discord.Colour.green())
             await channel.send(embed=embed)
             await member.send(f'You have been warned on **{ctx.guild}** for the following reason: {reason}')
 
-    @commands.command()
-    @commands.has_permissions(view_audit_log=True)
-    async def resetwarn(self, ctx, *, member: discord.Member = None):
+    @warn.error
+    async def warn_error(self, ctx, error):
+        if isinstance(error, commands.MissingRole):
+            embed = discord.Embed(
+                description=f"<:cross:839158779815657512> You must have the <@&825578057498099732> roles to use this command!")
+            await ctx.channel.send(embed=embed)
+
+    @cog_ext.cog_slash(name="resetwarn",
+                       description="Reset this User Warnings.",
+                       options=[
+                           create_option(
+                               name="member",
+                               description="Who is the Person?",
+                               option_type=6,
+                               required=False
+                           )])
+    # admin role (in this case.. server owner)
+    @commands.has_role(823029389154844743)
+    async def resetwarn(self, ctx: SlashContext, *, member: discord.Member = None):
 
         if member is None:
             embed = discord.Embed(
@@ -90,13 +127,17 @@ class warnsys(commands.Cog):
             embed = discord.Embed(
                 description=f"<:check:839158727512293406>  **{member.name}**'s Warnings has been resetted.", colour=discord.Colour.green())
             await ctx.channel.send(embed=embed)
-            # \n Now, {member.name} Currently have {exp} XP.
-        # else:
-        #    await ctx.send(f"<:cross:839158779815657512> **{ctx.author.name}**, that command is disabled in this channel.")
 
-    @commands.command()
+    @resetwarn.error
+    async def resetwarn_error(self, ctx, error):
+        if isinstance(error, commands.MissingRole):
+            embed = discord.Embed(
+                description=f"<:cross:839158779815657512> You must have the <@&823029389154844743> roles to use this command!")
+            await ctx.channel.send(embed=embed)
+
+    @cog_ext.cog_slash(name="warnings", description="Know your warnings.")
     @commands.cooldown(1, 86400, commands.BucketType.user)
-    async def warnings(self, ctx):
+    async def warnings(self, ctx: SlashContext):
         if ctx.channel.id == bot_channel:
             stats = warning.find_one({"id": ctx.author.id})
             mutes = mute.find_one({"id": ctx.author.id})
@@ -125,6 +166,7 @@ class warnsys(commands.Cog):
                 name=":pushpin: Bans", value="> If you're feeling getting a softban, Please Appeal it [Here](https://gnztmpz.eu.org)", inline=False)
             embed.set_thumbnail(url=ctx.author.avatar_url)
             await ctx.author.send(embed=embed)
+            await ctx.send("I have DM'ed you with your Warning List. You can see your warnings again in 24h.")
         else:
             return await ctx.send(f"<:cross:839158779815657512> **{ctx.author.mention}**, that command is disabled in this channel.")
 
@@ -152,7 +194,7 @@ class warnsys(commands.Cog):
                 cd = 1
             # msg is the message you would like to send, the format is how it formats the seconds left.
             embed = discord.Embed(
-                description=f"<:cross:839158779815657512> **{ctx.author.name}** you need to wait {self.better_time(cd)} to use that command again.", colour=discord.Colour.red())
+                description=f"<:cross:839158779815657512> **{ctx.author.name}**, you need to wait {self.better_time(cd)} to use that command again.", colour=discord.Colour.red())
             # sends the error message to the channel
             await ctx.send(embed=embed)
 
