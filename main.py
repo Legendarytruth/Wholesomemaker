@@ -2,31 +2,39 @@ import sys
 import discord
 from discord.ext import commands
 from discord import Embed
+from typing import Optional
 import os
+import datetime
+import asyncio
+import aiohttp
 import random
+from discord.ext.commands import cooldown, BucketType
 from typing import Optional
 from discord.ext import commands
+from discord_slash import SlashCommand
+from discord_slash import SlashContext
+import logging  # for logging things (on testing mode)
 
 intents = discord.Intents.default()
 intents.members = True
 intents.presences = True
+intents.reactions = True
 # stable prefixes
-client = commands.Bot(command_prefix=['sam ', 'Sam ', '!'])
-# testing prefixes
-#client = commands.Bot(command_prefix='c!')
+# up to you, the prefix is not used.. cuz we've done slash commands :)
+client = commands.Bot(command_prefix=['sam ', 'Sam ', '/'])
+
+# please, don't delete this. this is our main prefix ;)
+slash = SlashCommand(client, sync_commands=True)
 client.remove_command("help")
 
+# adding slash commands
 
-@client.command()
-@commands.has_role(845497466249412628)
+
+@slash.slash(name="load", description="Load a Module")
+@commands.has_role(845497466249412628)  # Samantha config man roles
 async def load(ctx, extension):
     client.load_extension(f'cogs.{extension}')
     await ctx.send(f'<:check:839158727512293406> Loaded **{extension}** Modules.')
-
-    channel = client.get_channel(831215570631393392)
-    embed = discord.Embed(
-        description=f"<:check:839158727512293406> **{ctx.author.mention}** Load **{extension}** Modules.", colour=discord.Colour.green())
-    await channel.send(embed=embed)
 
 
 @load.error
@@ -37,16 +45,11 @@ async def load_error(self, ctx, error):
         await ctx.channel.send(embed=embed)
 
 
-@client.command()
-@commands.has_role(845497466249412628)
+@slash.slash(name="unload", description="Unload a Module")
+@commands.has_role(845497466249412628)  # Samantha config man roles
 async def unload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
     await ctx.send(f'<:check:839158727512293406> Unloaded **{extension}** Modules.')
-
-    channel = client.get_channel(831215570631393392)
-    embed = discord.Embed(
-        description=f"<:check:839158727512293406> **{ctx.author.mention}** Unload **{extension}** Modules.", colour=discord.Colour.green())
-    await channel.send(embed=embed)
 
 
 @unload.error
@@ -57,17 +60,12 @@ async def unload_error(self, ctx, error):
         await ctx.channel.send(embed=embed)
 
 
-@client.command()
-@commands.has_role(845497466249412628)
+@slash.slash(name="reload", description="Reload a Module")
+@commands.has_role(845497466249412628)  # Samantha config man roles
 async def reload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
     client.load_extension(f'cogs.{extension}')
     await ctx.send(f'<:check:839158727512293406> Reloaded **{extension}** module.')
-
-    channel = client.get_channel(831215570631393392)
-    embed = discord.Embed(
-        description=f"<:check:839158727512293406> **{ctx.author.mention}** Reload **{extension}** Modules.", colour=discord.Colour.green())
-    await channel.send(embed=embed)
 
 
 @reload.error
@@ -82,10 +80,11 @@ for filename in os.listdir('./cogs'):
         client.load_extension(f'cogs.{filename[:-3]}')
 
 
-@client.command()
-@commands.has_role(845497466249412628)
+@slash.slash(name="shutdown", description="Shutdowns the Bot.")
+@commands.has_role(845497466249412628)  # Samantha config man roles
 async def shutdown(ctx):
-    channel = client.get_channel(831215570631393392)
+    await ctx.send(f':wave: The bot has been Shutdowned, Goodbye World.')
+    channel = client.get_channel(831215570631393392)  # server-logs
     embed = discord.Embed(
         description=f":wave: **Sam.py** has been Shutdowned. **Goodbye World!**", colour=discord.Colour.red())
     await channel.send(embed=embed)
@@ -105,10 +104,11 @@ def restart_program():
     os.execl(python, python, * sys.argv)
 
 
-@client.command()
-@commands.has_role(845497466249412628)
+@slash.slash(name="reboot", description="Reboot the Bot.")
+@commands.has_role(845497466249412628)  # Samantha config man roles
 async def reboot(ctx):
-    channel = client.get_channel(831215570631393392)
+    await ctx.send(f':wave: The bot has been Rebooting, Please Wait..')
+    channel = client.get_channel(831215570631393392)  # server-logs
     embed = discord.Embed(
         description=f":repeat: *Rebooting Sam.py..* **Please Standby...**", colour=discord.Colour.red())
     await channel.send(embed=embed)
@@ -121,7 +121,6 @@ async def reboot_error(self, ctx, error):
         embed = discord.Embed(
             description=f"<:cross:839158779815657512> You must have the <@&845497466249412628> roles to use this command!")
         await ctx.channel.send(embed=embed)
-
 # Command Grouping
 
 
@@ -135,7 +134,7 @@ async def commands(ctx):
         )
 
         embed.set_author(
-            name='Samantha, The Wholesome Series Videos Discord Bot', icon_url="https://raw.githubusercontent.com/GNZTMPZ/Samantha/main/sam.png")
+            name='Samantha, The Wholesome Series Videos Discord Bot')
         embed.set_thumbnail(
             url="https://raw.githubusercontent.com/GNZTMPZ/Samantha/main/sam.png")
         embed.add_field(
@@ -156,6 +155,8 @@ async def commands(ctx):
                         value='shutdown, reboot', inline=False)
         embed.add_field(name='_ _',
                         value='... _and more, will you be able to find them all?_', inline=False)
+        embed.add_field(name='Also, Did you know?',
+                        value='Samantha is **Open Source!** *yay!, poggers!* \n You can check it out at this [Github Repository](https://github.com/GNZTMPZ/Samantha). \n Want to Contribute? Feel free to check out this [Github Issues](https://github.com/GNZTMPZ/Samantha/issues/2) for more info! :grin:', inline=False)
         embed.set_footer(
             text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
 
@@ -172,13 +173,13 @@ async def ping(ctx):
     embed.add_field(name='__Ping Command__',
                     value='See the bots latency.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
-    embed.add_field(name='__How to use:__', value='!ping', inline=False)
+    embed.add_field(name='__How to use:__', value='/ping', inline=False)
 
     await ctx.send(embed=embed)
 
 
 @commands.command()
-async def av(ctx):
+async def avatar(ctx):
     author = ctx.message
 
     embed = discord.Embed(
@@ -188,7 +189,7 @@ async def av(ctx):
                     value='See your/other people avatar.', inline=False)
     embed.add_field(name='__Aliases:__', value='avatar', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!av <userid/tag>', inline=False)
+                    value='/avatar <userid/tag>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -235,7 +236,7 @@ async def bigemote(ctx):
                     value="as the name says, it's for emoji resizer.", inline=False)
     embed.add_field(name='__Aliases:__', value='bigemoji, be', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!bigemote <emote>', inline=False)
+                    value='/bigemote <emote>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -251,7 +252,7 @@ async def kick(ctx):
                     value='Kick Somebody out from this server.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!kick <userid/tag> <reason>', inline=False)
+                    value='/kick <userid/tag> <reason>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -267,7 +268,7 @@ async def ban(ctx):
                     value='Ban Somebody out from this server.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!ban <userid/tag> <reason>', inline=False)
+                    value='/ban <userid/tag> <reason>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -283,7 +284,7 @@ async def slowmode(ctx):
                     value='Slowing the chats.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!slowmode <time(s/m/h)>', inline=False)
+                    value='/slowmode <time(s/m/h)>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -299,7 +300,7 @@ async def mute(ctx):
                     value='Mute Somebody on this server.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!mute <userid/tag>', inline=False)
+                    value='/mute <userid/tag>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -315,7 +316,7 @@ async def unmute(ctx):
                     value='Unmute Somebody on this server.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!unmute <userid/tag>', inline=False)
+                    value='/unmute <userid/tag>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -331,7 +332,7 @@ async def prune(ctx):
                     value='Cleaning the chats.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!prune <how many messages>', inline=False)
+                    value='/prune <how many messages>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -347,7 +348,7 @@ async def mysteryspin(ctx):
                     value="Same with the Wheelspin Commands, but this is more `boom'in` Prize. \n To use this, You must get the Mystery Spin Access from Lucky Wheel. \n Only <@&825578057498099732> can use this commands.", inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!mysteryspin <userid/tag>', inline=False)
+                    value='/mysteryspin <userid/tag>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -363,7 +364,7 @@ async def rules(ctx):
                     value='*Shortcut to* <#828959702029041664> *for those who might need a refresher*', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!rules <userid/tag>', inline=False)
+                    value='/rules <userid/tag>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -379,7 +380,7 @@ async def invite(ctx):
                     value="*Receive Wholesome Series Videos Discord Invite*", inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!invite', inline=False)
+                    value='/invite', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -395,7 +396,7 @@ async def links(ctx):
                     value='*Shortcut to* <#824463250980339755>', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!links <userid/tag>', inline=False)
+                    value='/links <userid/tag>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -411,7 +412,7 @@ async def warnings(ctx):
                     value='Receive a DM from Samantha with the list of your warnings on this server.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!warnings', inline=False)
+                    value='/warnings', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -427,7 +428,7 @@ async def levels(ctx):
                     value='Receive Wholesome Series Videos Leaderboards', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!levels', inline=False)
+                    value='/levels', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -443,7 +444,7 @@ async def rank(ctx):
                     value='*See your current rank', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!rank', inline=False)
+                    value='/rank <userid/tag> (optional)', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -459,7 +460,7 @@ async def wheelspin(ctx):
                     value='*This command is like the wheel in GTA. You can use it every 24 hours. \nSimply type the command and the bot will give you something.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!wheelspin', inline=False)
+                    value='/wheelspin', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -475,7 +476,7 @@ async def pat(ctx):
                     value="Pat Someone with some GIF's", inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!pat <userid/tag>', inline=False)
+                    value='/pat <userid/tag>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -491,7 +492,7 @@ async def hug(ctx):
                     value="Pat Someone with some GIF's", inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!hug <userid/tag>', inline=False)
+                    value='/hug <userid/tag>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -507,7 +508,7 @@ async def kill(ctx):
                     value="_rekt_ someone with some gif's, not killing IRL. \n if you want to kill yourself IRL, better call 911 for your own safety.", inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!kill <userid/tag>', inline=False)
+                    value='/kill <userid/tag>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -523,7 +524,7 @@ async def kiss(ctx):
                     value="Kiss somebody with some Pics. \n _(No GIF's, because the API being a dick :pensive: )_", inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!kiss <userid/tag>', inline=False)
+                    value='/kiss <userid/tag>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -539,7 +540,7 @@ async def neko(ctx):
                     value="Provide you with some Neko Pics.", inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!neko', inline=False)
+                    value='/neko', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -555,7 +556,7 @@ async def smug(ctx):
                     value="Provide you with some smug pics.", inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!smug', inline=False)
+                    value='/smug', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -571,7 +572,7 @@ async def sad(ctx):
                     value="Provide you with some sad GIF's.", inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!sad', inline=False)
+                    value='/sad', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -587,7 +588,7 @@ async def slap(ctx):
                     value="Slap somebody with some GIF's.", inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!slap <userid/tag>', inline=False)
+                    value='/slap <userid/tag>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -603,7 +604,7 @@ async def meme(ctx):
                     value='Get some ~~not so~~ fresh meme.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!meme', inline=False)
+                    value='/meme', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -619,7 +620,7 @@ async def dog(ctx):
                     value='Give you some dog picture and dog facts', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!dog', inline=False)
+                    value='/dog', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -635,7 +636,7 @@ async def help(ctx):
                     value='Displays a list of commands.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!help', inline=False)
+                    value='/help', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -651,7 +652,7 @@ async def givexp(ctx):
                     value='Adding XP to Tagged Members. \n Only <@&845586428057354253> can use this commands.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!givexp <userid/tag> <how many xp>', inline=False)
+                    value='/givexp <userid/tag> <how many xp>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -667,7 +668,7 @@ async def setxp(ctx):
                     value='Set Tagged Members XP. \n Only <@&845586428057354253> can use this commands.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!setxp <userid/tag> <how many xp>', inline=False)
+                    value='/setxp <userid/tag> <how many xp>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -683,7 +684,7 @@ async def resetxp(ctx):
                     value='Reset Tagged Members XP. \n Only <@&845586428057354253> can use this commands.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!resetxp <userid/tag>', inline=False)
+                    value='/resetxp <userid/tag>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -699,7 +700,7 @@ async def warn(ctx):
                     value='Warn a User in this server. \n Only <@&845586428057354253> can use this commands.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!warn <userid/tag> <reason>', inline=False)
+                    value='/warn <userid/tag> <reason>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -715,7 +716,7 @@ async def resetwarn(ctx):
                     value='Reset User Warnings. \n Only <@&845586428057354253> can use this commands.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!resetwarn <userid/tag>', inline=False)
+                    value='/resetwarn <userid/tag>', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -731,7 +732,7 @@ async def shutdown(ctx):
                     value='Shutdown Sam.py for Maintenance \n Only <@&845497466249412628> can use this commands.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!shutdown', inline=False)
+                    value='/shutdown', inline=False)
 
     await ctx.send(embed=embed)
 
@@ -747,7 +748,7 @@ async def reboot(ctx):
                     value='Reboot Sam.py On the Fly. \n Only <@&845497466249412628> can use this commands.', inline=False)
     embed.add_field(name='__Aliases:__', value='None', inline=False)
     embed.add_field(name='__How to use:__',
-                    value='!reboot', inline=False)
+                    value='/reboot', inline=False)
 
     await ctx.send(embed=embed)
 # end of command grouping
@@ -755,18 +756,32 @@ async def reboot(ctx):
 
 @client.event
 async def on_ready():
-    await client.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.listening, name='Matthew™'))
-    print('Bot is ready')
-    channel = client.get_channel(831215570631393392)
+
+    # versioning.
+
     # Turn this on/off if wanna go stable
-    embed = discord.Embed(
-        description=f"<a:WaveBlob:827337423649505300> Hey there, **Sam.py** initialised with version **main**", colour=discord.Colour.green())
+    version = ("main")
     # Turn this on/off if wanna go testing mode
-    # embed = discord.Embed(
-    #    description=f"<a:WaveBlob:827337423649505300> Hey there, **Sam.py** initialised with version **testing**", colour=discord.Colour.green())
-    await channel.send(embed=embed)
+    #version = ("testing")
+
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.playing, name=version))
+    if version == "testing":
+        # super secret test channel (Define yourself)
+        channel = client.get_channel(864214499656466432)
+        embed = discord.Embed(
+            description=f"<a:WaveBlob:827337423649505300> Hey there, **Sam.py** initialised with version **{version}**", colour=discord.Colour.green())
+        await channel.send(embed=embed)
+        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(level=logging.WARNING)
+        logging.basicConfig(level=logging.ERROR)
+        logging.basicConfig(level=logging.CRITICAL)
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        channel = client.get_channel(831215570631393392)
+        embed = discord.Embed(
+            description=f"<a:WaveBlob:827337423649505300> Hey there, **Sam.py** initialised with version **{version}**", colour=discord.Colour.green())
+        await channel.send(embed=embed)
+    print(f"Sam.py is ready with version {version}")
 
 # sam normal token
-client.run('your bot token here')
-# sam test bot token
-# client.run('your bot token here')
+client.run('insert your bot token here :)')
