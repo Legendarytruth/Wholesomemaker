@@ -26,12 +26,15 @@ class slap(commands.Cog):
                        ])
     async def slap(self, ctx: SlashContext, *, member: discord.Member):
 
+        if member == ctx.author:
+            return await ctx.send("You can't slap yourself :confused:")
+
         async with aiohttp.ClientSession() as session:
             # Make a request
             request = await session.get('https://neko-love.xyz/api/v1/slap')
             dogjson = await request.json()  # Convert it to a JSON dictionary
         embed = discord.Embed(
-            title=f"**{ctx.author.name}** slapping **{member.name}** <a:Slap:839192442199867422>", color=discord.Color.purple())  # Create embed
+            title=f"**{ctx.author.display_name}** slapping **{member.display_name}** <a:Slap:839192442199867422>", color=discord.Color.purple())  # Create embed
         # Set the embed image to the value of the 'link' key
         embed.set_image(url=dogjson['url'])
         embed.set_footer(

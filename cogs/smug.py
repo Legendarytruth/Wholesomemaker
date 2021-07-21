@@ -21,7 +21,7 @@ class smug(commands.Cog):
             request = await session.get('https://neko-love.xyz/api/v1/smug')
             dogjson = await request.json()  # Convert it to a JSON dictionary
         embed = discord.Embed(
-            title=f"**{ctx.author.name}**, Here's some Smug pics <a:SmugGirl:841526768699179008>", color=discord.Color.purple())  # Create embed
+            title=f"**{ctx.author.display_name}**, Here's some Smug pics for you! ;)", color=discord.Color.purple())  # Create embed
         # Set the embed image to the value of the 'link' key
         embed.set_image(url=dogjson['url'])
         embed.set_footer(

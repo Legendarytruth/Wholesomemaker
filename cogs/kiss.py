@@ -25,12 +25,15 @@ class kiss(commands.Cog):
                            )])
     async def kiss(self, ctx: SlashContext, *, member: discord.Member):
 
+        if member == ctx.author:
+            return await ctx.send(":neutral_face: W.. wait, You can't kiss yourself.. \n How ruud you are :pensive:")
+
         async with aiohttp.ClientSession() as session:
             # Make a request
             request = await session.get('https://neko-love.xyz/api/v1/kiss')
             dogjson = await request.json()  # Convert it to a JSON dictionary
         embed = discord.Embed(
-            title=f"**{ctx.author.name}** kissing **{member.name}** :kissing_heart:", color=discord.Color.purple())  # Create embed
+            title=f"**{ctx.author.display_name}** kissing **{member.display_name}** :kissing_heart:", color=discord.Color.purple())  # Create embed
         # Set the embed image to the value of the 'link' key
         embed.set_image(url=dogjson['url'])
         embed.set_footer(

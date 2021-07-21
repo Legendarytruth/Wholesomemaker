@@ -26,15 +26,18 @@ class pat(commands.Cog):
                        ])
     async def pat(self, ctx: SlashContext, *, member: discord.Member = None):
 
+        if member == ctx.author:
+            return await ctx.send(":neutral_face: W.. wait, You can't pat yourself.. \n How ruud you are :pensive:")
+
         if member is None:
-            return await ctx.send(":neutral_face: W.. wait, You can't pat yourself.. \n How ruud you are -_-")
+            return await ctx.send(":neutral_face: W.. wait, You can't pat yourself.. \n How ruud you are :pensive:")
 
         async with aiohttp.ClientSession() as session:
             # Make a request
             request = await session.get('https://some-random-api.ml/animu/pat')
             dogjson = await request.json()  # Convert it to a JSON dictionary
         embed = discord.Embed(
-            title=f"<:uwu:839161075986726982> **{ctx.author.name}** patting **{member.name}** <:uwu:839161075986726982>", color=discord.Color.purple())  # Create embed
+            title=f"<:uwu:839161075986726982> **{ctx.author.display_name}** patting **{member.display_name}**", color=discord.Color.purple())  # Create embed
         # Set the embed image to the value of the 'link' key
         embed.set_image(url=dogjson['link'])
         embed.set_footer(

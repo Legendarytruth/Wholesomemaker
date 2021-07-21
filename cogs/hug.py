@@ -25,15 +25,18 @@ class hug(commands.Cog):
                            )])
     async def hug(self, ctx, *, member: discord.Member = None):
 
+        if member == ctx.author:
+            return await ctx.send(":neutral_face: W.. wait, You can't hug yourself.. \n How ruud you are :pensive:")
+
         if member is None:
-            member = ctx.author
+            return await ctx.send(":neutral_face: W.. wait, You can't hug yourself.. \n How ruud you are :pensive:")
 
         async with aiohttp.ClientSession() as session:
             # Make a request
             request = await session.get('https://some-random-api.ml/animu/hug')
             dogjson = await request.json()  # Convert it to a JSON dictionary
         embed = discord.Embed(
-            title=f"**{ctx.author.name}** hugging **{member.name}** <a:rooLove:839188637773594674>", color=discord.Color.purple())  # Create embed
+            title=f"**{ctx.author.display_name}** hugging **{member.display_name}** <a:rooLove:839188637773594674>", color=discord.Color.purple())  # Create embed
         # Set the embed image to the value of the 'link' key
         embed.set_image(url=dogjson['link'])
         embed.set_footer(

@@ -5,14 +5,16 @@ from pymongo import MongoClient
 from discord.ext.commands import cooldown, BucketType
 from discord_slash import *
 from discord_slash.utils.manage_commands import create_option
+from discord_slash.utils.manage_components import create_button, create_actionrow
 
-# leaderboards channel (for levelup message, rank card, and leaderboards)
 bot_channel = 812211967095472149
+botcommands_channel = 808958457855344640
+talk_channels = [812211967095472149, 825248166713622548, 866608473964544010, 866608518365708298, 812170448124510220, 817385869627097128, 807476822111420416, 830222254942978069, 824091824540614706, 857649456145235978, 806964929718255619, 818815530647158784, 808958457855344640,
+                 826078465781661736, 826078419888242708, 818815613266952193, 839444297542533140, 837680350716362814, 829866889937289257, 823152070189383700, 851398046951669770, 849008568178180137, 823573307215052830, 849130878701010965, 834312211454754826, 834312245571747842]
 
-# talk_channels is the most used channel (which in this case is all channels in Wholesome Series Videos)
-talk_channels = [818815530647158784, 818815613266952193, 808958457855344640, 837680350716362814, 815213963871911996, 828968512146898954, 839444297542533140, 825272629559951390,
-                 826078465781661736, 826078419888242708, 837720268918882305, 837665514654138480, 829866889937289257, 824809146641154130, 834312211454754826, 834312245571747842,
-                 817712543795249182, 816763959931043861, 854740829192060978]
+talk_channels_noadmin = [812211967095472149, 825248166713622548, 812170448124510220, 817385869627097128, 807476822111420416, 830222254942978069, 824091824540614706, 857649456145235978, 806964929718255619, 818815530647158784, 808958457855344640,
+                         826078465781661736, 826078419888242708, 818815613266952193, 839444297542533140, 837680350716362814, 829866889937289257, 823152070189383700, 851398046951669770, 849008568178180137, 823573307215052830, 849130878701010965, 834312211454754826, 834312245571747842]
+
 
 # role rewards
 level = ["Thug", "Hustler", "Soldier", "Trigger", "Enforcer",
@@ -26,26 +28,74 @@ cluster = MongoClient(
 
 levelling = cluster["discord"]["levelling"]
 
+logging = cluster["discord"]["logging"]
+
 
 class levelsys(commands.Cog):
     def __init__(self, client):
         self.client = client
-
 # this cog.listener is to log all people level count, based on sending a message. there is no problem at all.. move along folks :)
+
+    @commands.Cog.listener()
+    async def on_message_edit(self, before, after):
+        stats = logging.find_one({"id": before.author.id})
+        imgp = str(before.author.avatar_url)
+        logging.update_one({"message_id": before.id}, {"$set": {"username": before.author.name, "discrim": before.author.discriminator, "image_url": imgp, "message": str(
+            before.content), "editedto": str(after.content), "messageat": str(before.created_at), "editedat": str(after.created_at), "user_id": before.author.id}})
+
+        if before.channel.id in talk_channels_noadmin:
+            channel = self.client.get_channel(831215570631393392)
+            embed = discord.Embed(
+                description=f"**Message Edited in <#{before.channel.id}>**", colour=discord.Colour.dark_green())
+            embed.set_author(name=f'{before.author}',
+                             icon_url=before.author.avatar_url)
+            embed.add_field(name=f"Before:",
+                            value=f"{before.content}", inline=False)
+            embed.add_field(name=f"After:",
+                            value=f"{after.content}", inline=False)
+            embed.set_footer(
+                text=f"Message ID: {after.id} • User ID: {before.author.id}")
+
+        button = create_button(5, label='Jump to Message',
+                               url=f'{after.jump_url}')
+        await channel.send(embed=embed, components=[create_actionrow(button)])
+
+    @commands.Cog.listener()
+    async def on_message_delete(self, message):
+        if message.channel.id in talk_channels_noadmin:
+            channel = self.client.get_channel(831215570631393392)
+            embed = discord.Embed(
+                description=f"**Message sent by {message.author} deleted in <#{message.channel.id}>**", colour=discord.Colour.red())
+            embed.set_author(name=f'{message.author}',
+                             icon_url=message.author.avatar_url)
+            embed.add_field(name=f"Message:",
+                            value=f"{message.content}", inline=False)
+            embed.set_footer(
+                text=f"Author: {message.author.id} • Message ID: {message.id}")
+            await channel.send(embed=embed)
+
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.channel.id in talk_channels:
+        if message.channel.id in talk_channels_noadmin:
             stats = levelling.find_one({"id": message.author.id})
+            imgp = str(message.author.avatar_url)
+
+            newuser = {"id": message.id, "username": message.author.name, "discrim": message.author.discriminator, "image_url": imgp, "message": str(
+                message.content), "messageat": str(message.created_at), "user_id": message.author.id}
+            logging.insert_one(newuser)
+
             if not message.author.bot:
                 if stats is None:
                     newuser = {"id": message.author.id,
-                               "xp": 100, "username": message.author.name, "discrim": message.author.discriminator, "messagecount": 1}
+                               "xp": 100, "username": message.author.name, "discrim": message.author.discriminator, "messagecount": 1, "image_url": imgp}
                     levelling.insert_one(newuser)
+
                 else:
                     xp = stats["xp"] + 5
                     kung = stats["messagecount"] + 1
+                    img = str(message.author.avatar_url)
                     levelling.update_one({"id": message.author.id}, {
-                                         "$set": {"xp": xp, "username": message.author.name, "discrim": message.author.discriminator, "messagecount": kung}})
+                                         "$set": {"xp": xp, "username": message.author.name, "discrim": message.author.discriminator, "messagecount": kung, "image_url": img}})
                     lvl = 0
                     while True:
                         if xp < ((50*(lvl**2))+(50*lvl)):
@@ -53,7 +103,6 @@ class levelsys(commands.Cog):
                         lvl += 1
                     xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
                     if xp == 0:
-                        # send levelup message to leaderboards channel
                         channel = self.client.get_channel(812211967095472149)
                         await channel.send(f"Congratulations, {message.author.mention}. You've reached **level {lvl}** .")
                     for i in range(len(level)):

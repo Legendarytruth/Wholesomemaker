@@ -21,7 +21,7 @@ class neko(commands.Cog):
             request = await session.get('https://neko-love.xyz/api/v1/neko')
             dogjson = await request.json()  # Convert it to a JSON dictionary
         embed = discord.Embed(
-            title=f"**{ctx.author.name}**, Here's some Neko pics <a:patneko:841525298863276063>", color=discord.Color.purple())  # Create embed
+            title=f"**{ctx.author.display_name}**, Here's some Neko pics for you! ;)", color=discord.Color.purple())  # Create embed
         # Set the embed image to the value of the 'link' key
         embed.set_image(url=dogjson['url'])
         embed.set_footer(
