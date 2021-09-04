@@ -2,7 +2,7 @@ import sys
 import discord
 from discord.ext import commands
 from discord import Embed
-from typing import Optional
+import discord.utils
 import os
 import datetime
 import asyncio
@@ -15,15 +15,8 @@ from discord_slash import SlashCommand
 from discord_slash import SlashContext
 import logging  # for logging things (on testing mode)
 
-intents = discord.Intents.default()
-intents.members = True
-intents.presences = True
-intents.reactions = True
-# stable prefixes
-# up to you, the prefix is not used.. cuz we've done slash commands :)
-client = commands.Bot(command_prefix=['sam ', 'Sam ', '/'])
-
-# please, don't delete this. this is our main prefix ;)
+intents = discord.Intents.all()
+client = commands.Bot(command_prefix=['/', '!'])
 slash = SlashCommand(client, sync_commands=True)
 client.remove_command("help")
 
@@ -31,7 +24,7 @@ client.remove_command("help")
 
 
 @slash.slash(name="load", description="Load a Module")
-@commands.has_role(845497466249412628)  # Samantha config man roles
+@commands.has_role(845497466249412628)
 async def load(ctx, extension):
     client.load_extension(f'cogs.{extension}')
     await ctx.send(f'<:check:839158727512293406> Loaded **{extension}** Modules.')
@@ -42,11 +35,11 @@ async def load_error(self, ctx, error):
     if isinstance(error, commands.MissingRole):
         embed = discord.Embed(
             description=f"<:cross:839158779815657512> You must have the <@&845497466249412628> roles to use this command!")
-        await ctx.channel.send(embed=embed)
+        await ctx.send(embed=embed)
 
 
 @slash.slash(name="unload", description="Unload a Module")
-@commands.has_role(845497466249412628)  # Samantha config man roles
+@commands.has_role(845497466249412628)
 async def unload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
     await ctx.send(f'<:check:839158727512293406> Unloaded **{extension}** Modules.')
@@ -57,11 +50,11 @@ async def unload_error(self, ctx, error):
     if isinstance(error, commands.MissingRole):
         embed = discord.Embed(
             description=f"<:cross:839158779815657512> You must have the <@&845497466249412628> roles to use this command!")
-        await ctx.channel.send(embed=embed)
+        await ctx.send(embed=embed)
 
 
 @slash.slash(name="reload", description="Reload a Module")
-@commands.has_role(845497466249412628)  # Samantha config man roles
+@commands.has_role(845497466249412628)
 async def reload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
     client.load_extension(f'cogs.{extension}')
@@ -73,7 +66,7 @@ async def reload_error(self, ctx, error):
     if isinstance(error, commands.MissingRole):
         embed = discord.Embed(
             description=f"<:cross:839158779815657512> You must have the <@&845497466249412628> roles to use this command!")
-        await ctx.channel.send(embed=embed)
+        await ctx.send(embed=embed)
 
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
@@ -81,12 +74,12 @@ for filename in os.listdir('./cogs'):
 
 
 @slash.slash(name="shutdown", description="Shutdowns the Bot.")
-@commands.has_role(845497466249412628)  # Samantha config man roles
+@commands.has_role(845497466249412628)
 async def shutdown(ctx):
     await ctx.send(f':wave: The bot has been Shutdowned, Goodbye World.')
-    channel = client.get_channel(831215570631393392)  # server-logs
+    channel = client.get_channel(831215570631393392)
     embed = discord.Embed(
-        description=f":wave: **Sam.py** has been Shutdowned. **Goodbye World!**", colour=discord.Colour.red())
+        description=f":wave: **Wholesomemaker** has been Shutdowned. **Goodbye World!**", colour=discord.Colour.red())
     await channel.send(embed=embed)
     await ctx.bot.close()
 
@@ -96,7 +89,7 @@ async def shutdown_error(self, ctx, error):
     if isinstance(error, commands.MissingRole):
         embed = discord.Embed(
             description=f"<:cross:839158779815657512> You must have the <@&845497466249412628> roles to use this command!")
-        await ctx.channel.send(embed=embed)
+        await ctx.send(embed=embed)
 
 
 def restart_program():
@@ -105,12 +98,12 @@ def restart_program():
 
 
 @slash.slash(name="reboot", description="Reboot the Bot.")
-@commands.has_role(845497466249412628)  # Samantha config man roles
+@commands.has_role(845497466249412628)
 async def reboot(ctx):
     await ctx.send(f':wave: The bot has been Rebooting, Please Wait..')
-    channel = client.get_channel(831215570631393392)  # server-logs
+    channel = client.get_channel(831215570631393392)
     embed = discord.Embed(
-        description=f":repeat: *Rebooting Sam.py..* **Please Standby...**", colour=discord.Colour.red())
+        description=f":repeat: *Rebooting Wholesomemaker..* **Please Standby...**", colour=discord.Colour.red())
     await channel.send(embed=embed)
     restart_program()
 
@@ -120,7 +113,22 @@ async def reboot_error(self, ctx, error):
     if isinstance(error, commands.MissingRole):
         embed = discord.Embed(
             description=f"<:cross:839158779815657512> You must have the <@&845497466249412628> roles to use this command!")
-        await ctx.channel.send(embed=embed)
+        await ctx.send(embed=embed)
+
+ # Customise the message below to what you want to send new users!
+newUserMessage = """
+Hi! Welcome to the Wholesome Series Videos official Discord server!
+Please read the rules and be respectful.
+"""
+
+
+@client.event
+async def on_member_join(member):
+
+    # Gets the member role as a `role` object
+    role = discord.utils.get(member.server.roles, name="non verified")
+    await client.add_roles(member, role)  # Gives the role to the user
+    await member.send(newUserMessage)
 
 
 @ client.event
@@ -128,18 +136,29 @@ async def on_ready():
 
     # versioning.
 
-    version = ("main")
+    # versioning types.
 
     # Turn this on/off if wanna go stable
     # version = ("main")
     # Turn this on/off if wanna go testing mode
     # version = ("testing")
+    # or simply don't type anything to go undefined mode
+    # version = ("")
+
+    version = ("master")
+
+    if version == "master":
+        await client.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.playing, name=f"🎂 - {version}"))
+        channel = client.get_channel(831215570631393392)
+        embed = discord.Embed(
+            description=f"<a:WaveBlob:827337423649505300> Hey there, **Wholesomemaker** initialised with version **{version}**", colour=discord.Colour.green())
+        await channel.send(embed=embed)
 
     if version == "testing":
         await client.change_presence(status=discord.Status.do_not_disturb, activity=discord.Activity(type=discord.ActivityType.playing, name=version))
         channel = client.get_channel(864214499656466432)
         embed = discord.Embed(
-            description=f"<a:WaveBlob:827337423649505300> Hey there, **Sam.py** initialised with version **{version}**", colour=discord.Colour.green())
+            description=f"<a:WaveBlob:827337423649505300> Hey there, **Wholesomemaker** initialised with version **{version}**", colour=discord.Colour.green())
         await channel.send(embed=embed)
         logging.basicConfig(level=logging.INFO)
         logging.basicConfig(level=logging.WARNING)
@@ -147,14 +166,14 @@ async def on_ready():
         logging.basicConfig(level=logging.CRITICAL)
         logging.basicConfig(level=logging.DEBUG)
 
-    if version == "main":
-        await client.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.playing, name=version))
+    if version == "🕯️ R.I.P. -":
+        await client.change_presence(status=discord.Status.do_not_disturb, activity=discord.Activity(type=discord.ActivityType.playing, name=version))
         channel = client.get_channel(831215570631393392)
         embed = discord.Embed(
-            description=f"<a:WaveBlob:827337423649505300> Hey there, **Sam.py** initialised with version **{version}**", colour=discord.Colour.green())
+            description=f"<a:WaveBlob:827337423649505300> Hey there, **Wholesomemaker** initialised with version **{version}**", colour=discord.Colour.green())
         await channel.send(embed=embed)
 
-    print(f"Sam.py is ready with version {version}")
+    print(f"Wholesomemaker is ready for action with version {version}")
 
-# sam normal token
+# normal token
 client.run('insert your bot token here :)')

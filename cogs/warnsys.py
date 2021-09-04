@@ -13,19 +13,17 @@ warning = cluster["discord"]["warning"]
 mute = cluster["discord"]["muted"]
 kicks = cluster["discord"]["kicks"]
 
-# talk_channels is the most used channel (which in this case is all channels in Wholesome Series Videos)
 talk_channels = [818815530647158784, 818815613266952193, 808958457855344640, 837680350716362814, 815213963871911996, 828968512146898954, 839444297542533140, 825272629559951390,
                  826078465781661736, 826078419888242708, 837720268918882305, 837665514654138480, 829866889937289257, 824809146641154130, 834312211454754826, 834312245571747842,
                  817712543795249182, 816763959931043861]
 
-bot_channel = 808958457855344640  # leaderboards channel (for check warnings)
+bot_channel = 808958457855344640
 
 
 class warnsys(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-# this cog.listener is to log all people warn count, based on sending a message. there is no problem at all.. move along folks :)
     @commands.Cog.listener()
     async def on_message(self, message):
         if message.channel.id in talk_channels:
@@ -58,17 +56,17 @@ class warnsys(commands.Cog):
                            create_option(
                                name="reason",
                                description="Provide the reason.",
-                               option_type=4,
+                               option_type=3,
                                required=False
                            )
                        ])
-    @commands.has_role(825578057498099732)  # operator role (moderators)
+    @commands.has_role(825578057498099732)
     async def warn(self, ctx: SlashContext, member: discord.Member = None, *, reason: str = None):
 
         if reason is None:
             reason = ("No Reason Provided.")
 
-        if member == 351147060956889088:  # GNZTMPZ UserID (server owner)
+        if member == 351147060956889088:
             ctx.send(
                 f"<:cross:839158779815657512> {ctx.author} You can't warn Server Owner.")
 
@@ -76,22 +74,22 @@ class warnsys(commands.Cog):
         if stats is None:
             warning.insert_one(
                 {"id": member.id, "warncount": 1, "reason": reason})
-            # send warn logs to #server-logs
             channel = self.client.get_channel(831215570631393392)
             embed = discord.Embed(
                 description=f"<:check:839158727512293406> **{ctx.author.mention}** warns **{member.mention}** for following reason : {reason}", colour=discord.Colour.green())
             await channel.send(embed=embed)
             await member.send(f'You have been warned on **{ctx.guild}** for the following reason: {reason}')
+            await ctx.send(f'**{member.mention}** has been warned for the following reason: {reason}')
         else:
             warncount = stats["warncount"] + 1
             warning.update_one({"id": member.id}, {"$set": {
                 "warncount": warncount, "reason": reason}})
-            # send warn logs to #server-logs
             channel = self.client.get_channel(831215570631393392)
             embed = discord.Embed(
                 description=f"<:check:839158727512293406> **{ctx.author.mention}** warns **{member.mention}** for following reason : {reason}", colour=discord.Colour.green())
             await channel.send(embed=embed)
             await member.send(f'You have been warned on **{ctx.guild}** for the following reason: {reason}')
+            await ctx.send(f'**{member.mention}** has been warned for the following reason: {reason}')
 
     @warn.error
     async def warn_error(self, ctx, error):
@@ -109,14 +107,13 @@ class warnsys(commands.Cog):
                                option_type=6,
                                required=False
                            )])
-    # admin role (in this case.. server owner)
     @commands.has_role(823029389154844743)
     async def resetwarn(self, ctx: SlashContext, *, member: discord.Member = None):
 
         if member is None:
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> **{ctx.author.name}**, you can't reset your own Warnings!", colour=discord.Colour.red())
-            await ctx.channel.send(embed=embed)
+            await ctx.send(embed=embed)
         else:
             # if ctx.channel.id == botcommands_channel:
             warning.delete_one({"id": member.id})
@@ -126,7 +123,7 @@ class warnsys(commands.Cog):
             await channel.send(embed=embed)
             embed = discord.Embed(
                 description=f"<:check:839158727512293406>  **{member.name}**'s Warnings has been resetted.", colour=discord.Colour.green())
-            await ctx.channel.send(embed=embed)
+            await ctx.send(embed=embed)
 
     @resetwarn.error
     async def resetwarn_error(self, ctx, error):
@@ -162,8 +159,8 @@ class warnsys(commands.Cog):
                 name="Kick Count", value=kicked["kickcount"], inline=False)
             embed.add_field(
                 name="Latest Reason", value=kicked["reason"], inline=False)
-            embed.add_field(
-                name=":pushpin: Bans", value="> If you're feeling getting a softban, Please Appeal it [Here](https://gnztmpz.eu.org)", inline=False)
+            # embed.add_field(
+            #    name=":pushpin: Bans", value="> If you're feeling getting a softban, Please Appeal it [Here](https://gnztmpz.eu.org)", inline=False)
             embed.set_thumbnail(url=ctx.author.avatar_url)
             await ctx.author.send(embed=embed)
             await ctx.send("I have DM'ed you with your Warning List. You can see your warnings again in 24h.")

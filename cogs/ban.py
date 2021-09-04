@@ -29,7 +29,7 @@ class ban(commands.Cog):
                                required=False
                            )
                        ])
-    @commands.has_role(845586428057354253)  # dispatch role (head moderators)
+    @commands.has_role(845586428057354253)
     async def ban(self, ctx: SlashContext, user_id, *, reason: Optional[str] = "No reason provided."):
         user = await self.client.fetch_user(user_id)
         try:

@@ -23,7 +23,7 @@ class avatar(commands.Cog):
     async def avatar(self, ctx: SlashContext, *, member):
         member = ctx.author if not member else member
         embed = discord.Embed(
-            title=f"{member.name}'s avatar", color=member.color)
+            title=f"{member.display_name}'s avatar", color=member.color)
         embed.set_image(url=member.avatar_url)
         embed.set_footer(
             text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)

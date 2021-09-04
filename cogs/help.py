@@ -30,13 +30,11 @@ class help(commands.Cog):
             )
 
             embed.set_author(
-                name='Samantha, The Wholesome Series Videos Discord Bot')
+                name='Wholesomemaker, The Wholesome Series Videos Discord Bot')
             embed.set_thumbnail(
-                url="https://raw.githubusercontent.com/GNZTMPZ/Samantha/main/sam.png")
+                url="https://rudy.matthewsoft.eu.org/Wholesomemaker.png")
             embed.add_field(
                 name='_ _', value='_Use [`/`] help [command name] to see more info on a command._', inline=False)
-            # embed.add_field(
-            #    name='**Featured Commands**', value='`Say hello, Sam` (on canary mode, not yet finished)', inline=False)
             embed.add_field(name='**Fun commands**',
                             value='pat, hug, kill, kiss, neko, smug, sad, slap, meme, dog', inline=False)
             embed.add_field(name='**Economic commands**',
@@ -47,12 +45,10 @@ class help(commands.Cog):
                             value='help, avatar, ping, serverinfo, userinfo, bigemote', inline=False)
             embed.add_field(name='**Moderation commands**',
                             value='kick, ban, unban, slowmode, mute, unmute, prune, mysteryspin, givexp, resetxp, setxp, warn, resetwarn', inline=False)
-            embed.add_field(name='**Samantha s̶i̶m̶p config man commands**',
-                            value='shutdown, reboot', inline=False)
             embed.add_field(name='_ _',
                             value='... _and more, will you be able to find them all?_', inline=False)
             embed.add_field(name='Also, Did you know?',
-                            value='Samantha is **Open Source!** *yay!, poggers!* \n You can check it out at this [Github Repository](https://github.com/GNZTMPZ/Samantha). \n Want to Contribute? Feel free to check out this [Github Issues](https://github.com/GNZTMPZ/Samantha/issues/2) for more info! :grin:', inline=False)
+                            value='Wholesomemaker is **Open Source!** *yay!, poggers!* \n You can check it out at this [Github Repository](https://github.com/GNZTMPZ/Samantha). \n Want to Contribute? Feel free to check out this [Github Issues](https://github.com/GNZTMPZ/Samantha/issues/2) for more info! :grin:', inline=False)
             embed.set_footer(
                 text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
 
@@ -249,7 +245,7 @@ class help(commands.Cog):
                 colour=discord.Colour.purple()
             )
             embed.add_field(name='__Warnings Command__',
-                            value='Receive a DM from Samantha with the list of your warnings on this server.', inline=False)
+                            value='Receive a DM from Wholesomemaker with the list of your warnings on this server.', inline=False)
             embed.add_field(name='__Aliases:__', value='None', inline=False)
             embed.add_field(name='__How to use:__',
                             value='/warnings', inline=False)
@@ -469,30 +465,6 @@ class help(commands.Cog):
             embed.add_field(name='__Aliases:__', value='None', inline=False)
             embed.add_field(name='__How to use:__',
                             value='/resetwarn <userid/tag>', inline=False)
-
-            return await ctx.send(embed=embed)
-
-        if category == "shutdown":
-            embed = discord.Embed(
-                colour=discord.Colour.purple()
-            )
-            embed.add_field(name='__Shutdown Command__',
-                            value='Shutdown Sam.py for Maintenance \n Only <@&845497466249412628> can use this commands.', inline=False)
-            embed.add_field(name='__Aliases:__', value='None', inline=False)
-            embed.add_field(name='__How to use:__',
-                            value='/shutdown', inline=False)
-
-            return await ctx.send(embed=embed)
-
-        if category == "reboot":
-            embed = discord.Embed(
-                colour=discord.Colour.purple()
-            )
-            embed.add_field(name='__Reboot Command__',
-                            value='Reboot Sam.py On the Fly. \n Only <@&845497466249412628> can use this commands.', inline=False)
-            embed.add_field(name='__Aliases:__', value='None', inline=False)
-            embed.add_field(name='__How to use:__',
-                            value='/reboot', inline=False)
 
             return await ctx.send(embed=embed)
 
