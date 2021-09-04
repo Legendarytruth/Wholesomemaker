@@ -1,19 +1,19 @@
 ## Wholesome Series Videos Discord Server Bots
 
-[![build](https://github.com/GNZTMPZ/Samantha/actions/workflows/build.yml/badge.svg)](https://github.com/GNZTMPZ/Samantha/actions/workflows/build.yml)
+[![build](https://github.com/GNZTMPZ/Samantha/actions/workflows/build.yml/badge.svg)](https://github.com/GNZTMPZ/Wholesomemaker/actions/workflows/build.yml)
 
-Thanks to [Zap](https://github.com/ZappiestSet81) for Collaborations on Samantha.py codes, Love you Homie :heart:
+Thanks to [Zap](https://github.com/ZappiestSet81) for Collaborations on Wholesomemaker codes, Love you Homie :heart:
 
-and Special Thanks to [🐧 rsetiawan7](https://github.com/rsetiawan7) for Collaborations on Samantha.py as Docker Guru.
+and Special Thanks to [🐧 rsetiawan7](https://github.com/rsetiawan7) for Collaborations on Wholesomemaker as Docker Guru.
 
-![Sam](sam.png)
+![Wholesomemaker](Wholesomemaker.png)
 
 ## Development
 
 This project is open to anyone who wants to contribute, large or small! Whether you noticed a typo or want to add a
 whole new feature, go for it!
 
-Large additions should be discussed in issues or on Discord first. If you're new to Python, ask me on [discord](https://discordapp.com/users/351147060956889088) for where to start and you can use Samantha as a starting point for a contribution.
+Large additions should be discussed in issues or on Discord first. If you're new to Python, ask me on [discord](https://discordapp.com/users/351147060956889088) for where to start and you can use Wholesomemaker as a starting point for a contribution.
 
 ### Testing/Workflow
 
@@ -31,12 +31,11 @@ If you don't own/admin a Discord server, creating one is simple, you can do it f
 
 ### Docker
 
-Thanks to [🐧 rsetiawan7](https://github.com/rsetiawan7), Samantha Supports running on Docker. but.. the Active Docker Images has been used for Production Purposes as a Private Repository. 
+Thanks to [🐧 rsetiawan7](https://github.com/rsetiawan7), Wholesomemaker Supports running on Docker. but.. the Active Docker Images has been used for Production Purposes as a Private Repository.
 
-You "could" technically run it on Docker, I have provide you the essence of it (Dockerfile and github actions settings). 
+You "could" technically run it on Docker, I have provide you the essence of it (Dockerfile and github actions settings).
 
 I assume you already know how to do it, Please Refer to `Docker` folder to Getting Started. Thanks. 😉
-
 
 ### Normal Install
 
