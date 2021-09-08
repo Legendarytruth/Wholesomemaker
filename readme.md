@@ -1,10 +1,8 @@
 ## Wholesome Series Videos Discord Server Bots
 
-[![build](https://github.com/GNZTMPZ/Samantha/actions/workflows/build.yml/badge.svg)](https://github.com/GNZTMPZ/Wholesomemaker/actions/workflows/build.yml)
+[![build-linux](https://github.com/GNZTMPZ/Wholesomemaker/actions/workflows/build-linux.yml/badge.svg)](https://github.com/GNZTMPZ/Wholesomemaker/actions/workflows/build-linux.yml)
 
-Thanks to [Zap](https://github.com/ZappiestSet81) for Collaborations on Wholesomemaker codes, Love you Homie :heart:
-
-and Special Thanks to [🐧 rsetiawan7](https://github.com/rsetiawan7) for Collaborations on Wholesomemaker as Docker Guru.
+Wholesomemaker is a Discord Bot that have all tools you need from managing a server, engage with server members, and more...
 
 ![Wholesomemaker](Wholesomemaker.png)
 
@@ -15,7 +13,7 @@ whole new feature, go for it!
 
 Large additions should be discussed in issues or on Discord first. If you're new to Python, ask me on [discord](https://discordapp.com/users/351147060956889088) for where to start and you can use Wholesomemaker as a starting point for a contribution.
 
-### Testing/Workflow
+## Testing/Workflow
 
 To run the app, you need:
 
@@ -29,7 +27,7 @@ To run the app, you need:
 
 If you don't own/admin a Discord server, creating one is simple, you can do it from the same menu you join discord servers from.
 
-### Docker
+## Docker
 
 Thanks to [🐧 rsetiawan7](https://github.com/rsetiawan7), Wholesomemaker Supports running on Docker. but.. the Active Docker Images has been used for Production Purposes as a Private Repository.
 
@@ -37,7 +35,11 @@ You "could" technically run it on Docker, I have provide you the essence of it (
 
 I assume you already know how to do it, Please Refer to `Docker` folder to Getting Started. Thanks. 😉
 
-### Normal Install
+## Leaderboards Website! 👀
+
+Wholesomemaker using [Flask](https://flask.palletsprojects.com/) as Website Framework. For More info, Please refer to [leaderboards](https://github.com/GNZTMPZ/Wholesomemaker-1/tree/leaderboards) branch. Thanks.
+
+## Installation
 
 - first, you need to install the Python and MongoDB (Optional)
   you can see the docs for [python](https://docs.python.org/3/using/windows.html) and [mongodb](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/)
@@ -47,7 +49,7 @@ I assume you already know how to do it, Please Refer to `Docker` folder to Getti
 
 - next stop, copy your bot token in the end of `main.py`.
 
-### Levelling Systems (Optional)
+##### Levelling Systems (Optional)
 
 - if you want the levelling systems.
 
@@ -60,7 +62,7 @@ I assume you already know how to do it, Please Refer to `Docker` folder to Getti
 
   - If you're didn't want levelling system, just delete this file `cogs/levelsys.py`
 
-### Warning Systems (Important, well.. sort of)
+##### Warning Systems (Important, well.. sort of)
 
 So, basically.. Warning systems are connected with `cogs/mute.py` and `cogs/kick.py`. so in order to use those two commands, you need to use warning systems, otherwise.. it will erroring all over the place.
 
@@ -74,7 +76,7 @@ So, basically.. Warning systems are connected with `cogs/mute.py` and `cogs/kick
 
   - and then, you can add the mongodb links on `cogs/warnsys.py`, `cogs/mute.py`, and `cogs/kick.py`
 
-### Finalize things...
+##### Finalize things...
 
 - Whenever you're ready, You can start the bot with this commands.
 
@@ -83,6 +85,15 @@ So, basically.. Warning systems are connected with `cogs/mute.py` and `cogs/kick
 
 and, Voila! You've setup the bot!
 
-### Contributions✨
+## Contributors ✨
 
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore -->
+<table><tr><td align="center"><a href="https://github.com/ZappiestSet81"><img src="https://avatars.githubusercontent.com/u/80011834?v=4" width="100px;" alt="ZappiestSet81"/><br /><sub><b>ZappiestSet81</b></sub></a><br /><a href="#" title="Code">💻</a> <a href="#" title="Ideas, Planning, & Feedback">🤔</a> </td><td align="center"><a href="https://github.com/rsetiawan7"><img src="https://avatars.githubusercontent.com/u/7775372?v=4" width="100px;" alt="rsetiawan7"/><br /><sub><b>rsetiawan7</b></sub></a><br /><a href="https://github.com/GNZTMPZ/Wholesomemaker/blob/master/Dockerfile" title="Code">💻</a></td></tr></table>
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
 Contributions of any kind welcome!
