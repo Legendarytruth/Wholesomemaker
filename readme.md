@@ -1,6 +1,6 @@
 ## Wholesome Series Videos Discord Server Bots
 
-[![build-linux](https://github.com/GNZTMPZ/Wholesomemaker/actions/workflows/build-linux.yml/badge.svg)](https://github.com/GNZTMPZ/Wholesomemaker/actions/workflows/build-linux.yml)
+[![build](https://github.com/GNZTMPZ/Wholesomemaker-1/actions/workflows/build.yml/badge.svg)](https://github.com/GNZTMPZ/Wholesomemaker-1/actions/workflows/build.yml)
 
 Wholesomemaker is a Discord Bot that have all tools you need from managing a server, engage with server members, and more...
 
