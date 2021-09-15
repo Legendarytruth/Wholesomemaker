@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)https://www.gtaseriesvideos.com/discord-leaderboard/ -->
+<html lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Wholesomemaker is a powerful and easy to use discord bot !">
+    <meta name="author" content="GNZTMPZ">
+    <link rel="shortcut icon" type="image/png"
+        href="https://cdn.discordapp.com/icons/806949608349106197/7f2d97dade7d165b941bd95dbfac358a.png?size=1024" />
+    <title>Wholesomemaker - The Discord Bot</title>
+
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/font.css') }}">
+    <link href="{{ url_for('static', filename='css/main.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/scrolling-nav.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/radial.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/discord.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animate.min.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+</head>
+
+<body id="page-top">
+    <header class="">
+        <div class="animate__animated animate__fadeInDown logo ">
+            <figure>
+                <img class="" height="200px" width="200px"
+                    src="https://cdn.discordapp.com/icons/806949608349106197/7f2d97dade7d165b941bd95dbfac358a.png?size=1024">
+            </figure>
+        </div>
+        <div class="banner"></div>
+    </header>
+    <section id="about">
+        <div class="container">
+            <div class="row">
+                <div class="leaderboardBody animate__animated animate__rubberBand ">
+                    <div class="col-lg-8 mx-auto leaderboardPlayersListContainer">
+                        <div class="loader">
+                            <div></div>
+                            <div></div>
+                            <div></div>
+                        </div>
+
+                        <div class="leaderboardPlayersList">
+                            {% for x in rankings %}
+                            <player>
+                                <div class="leaderboardPlayer">
+
+                                    <div class="leaderboardPlayerLeft">
+
+                                        <div class="leaderboardRank ">{{loop.index}}</div>
+                                        <div class="leaderboardPlayerIcon"><img
+                                                onerror="this.src=&#39;https://cdn.discordapp.com/embed/avatars/1.png&#39;;"
+                                                src="{{x.image_url}}">
+                                        </div>
+                                        <div class="leaderboardPlayerUsername">{{x.username}}#{{x.discrim}}</div>
+                                    </div>
+                                    <div class="leaderboardPlayerStats">
+                                        <div class="leaderboardPlayerStatBlock remove-mobile nonpriority">
+                                            <div class="leaderboardPlayerStatName">MESSAGES
+                                            </div>
+                                            <div class="leaderboardPlayerStatValue">{{x.messagecount}}
+                                            </div>
+                                        </div>
+                                        <div class="leaderboardPlayerStatBlock nonpriority">
+                                            <div class="leaderboardPlayerStatName">EXPERIENCE
+                                            </div>
+                                            <div class="leaderboardPlayerStatValue">{{x.xp}}XP
+                                            </div>
+                                        </div>
+                                        <div class="leaderboardPlayerStatBlock">
+                                            <div class="progress-circle">
+                                                <span>
+                                                    <div class="leaderboardPlayerStatName"
+                                                        style="margin-right: 1%; margin-top: 25%;">Level
+                                                    </div>
+                                                    <div class="leaderboardPlayerStatValue" style="margin-right: 3%;">
+                                                        {{x.level}}
+                                                    </div>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="leaderboardPlayerSep"></div>
+                            </player>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <br>
+                    <br>
+                    <div class="leaderboardSidebarBlock">
+                        <h1 onclick="handleOnClick()">Role Rewards</h1>
+                        <div class="leaderboardSidebarBlockContentWrapper">
+                            <div class="leaderboardSidebarBlockSeparator"></div>
+                            <div class="leaderboardSidebarBlockContent">
+                                <div class="flex flexColumn bottom10">
+                                    <h5>LEVEL 1</h5>
+                                    <div class="flex flexRow flexWrap">
+                                        <div class="leaderboardRole" style="border-color: #99aab5; color: #99aab5;">
+                                            thug</div>
+                                    </div>
+                                </div>
+                                <div class="flex flexColumn bottom10">
+                                    <h5>LEVEL 5</h5>
+                                    <div class="flex flexRow flexWrap">
+                                        <div class="leaderboardRole" style="border-color: #99aab5; color: #99aab5;">
+                                            hustler</div>
+                                    </div>
+                                </div>
+                                <div class="flex flexColumn bottom10">
+                                    <h5>LEVEL 10</h5>
+                                    <div class="flex flexRow flexWrap">
+                                        <div class="leaderboardRole" style="border-color: #b9bbbe; color: #b9bbbe;">
+                                            soldier</div>
+                                    </div>
+                                </div>
+                                <div class="flex flexColumn bottom10">
+                                    <h5>LEVEL 15</h5>
+                                    <div class="flex flexRow flexWrap">
+                                        <div class="leaderboardRole" style="border-color: #b9bbbe; color: #b9bbbe;">
+                                            trigger</div>
+                                    </div>
+                                </div>
+                                <div class="flex flexColumn bottom10">
+                                    <h5>LEVEL 20</h5>
+                                    <div class="flex flexRow flexWrap">
+                                        <div class="leaderboardRole" style="border-color: #e9daef; color: #e9daef;">
+                                            enforcer</div>
+                                    </div>
+                                </div>
+                                <div class="flex flexColumn bottom10">
+                                    <h5>LEVEL 25</h5>
+                                    <div class="flex flexRow flexWrap">
+                                        <div class="leaderboardRole" style="border-color: #d1b3de; color: #d1b3de;">
+                                            facilitator</div>
+                                    </div>
+                                </div>
+                                <div class="flex flexColumn bottom10">
+                                    <h5>LEVEL 30</h5>
+                                    <div class="flex flexRow flexWrap">
+                                        <div class="leaderboardRole" style="border-color: #d1b3de; color: #d1b3de;">
+                                            public enemy</div>
+                                    </div>
+                                </div>
+                                <div class="flex flexColumn bottom10">
+                                    <h5>LEVEL 35</h5>
+                                    <div class="flex flexRow flexWrap">
+                                        <div class="leaderboardRole" style="border-color: #bf87d8; color: #bf87d8;">
+                                            shot caller</div>
+                                    </div>
+                                </div>
+                                <div class="flex flexColumn bottom10">
+                                    <h5>LEVEL 40</h5>
+                                    <div class="flex flexRow flexWrap">
+                                        <div class="leaderboardRole" style="border-color: #b872d6; color: #b872d6;">
+                                            street boss
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex flexColumn bottom10">
+                                    <h5>LEVEL 45</h5>
+                                    <div class="flex flexRow flexWrap">
+                                        <div class="leaderboardRole" style="border-color: #b872d6; color: #b872d6;">
+                                            right hand</div>
+                                    </div>
+                                </div>
+                                <div class="flex flexColumn bottom10">
+                                    <h5>LEVEL 50</h5>
+                                    <div class="flex flexRow flexWrap">
+                                        <div class="leaderboardRole" style="border-color: #a438d3; color: #a438d3;">
+                                            active</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><br>
+                </div>
+            </div>
+        </div>
+        </div>
+        <div class="lds-ripple">
+            <div></div>
+            <div></div>
+        </div>
+        </div>
+    </section>
+    <footer class="footer-dark">
+        <hr />
+
+        <br />
+        <center>Created with <i class="fa fa-heart"></i> by GNZTMPZ</center>
+        <br /><br />
+    </footer>
+    <script>
+        function handleOnClick() {
+            let element = document.querySelector("div.leaderboardSidebarBlock");
+            if (element.classList.contains('open')) {
+                $('div.leaderboardSidebarBlock').removeClass('open');
+            } else {
+                $('div.leaderboardSidebarBlock').addClass('open');
+            }
+        }
+        function handleOnClick1() {
+            let element = document.querySelector("div.leaderboardSidebarBlock");
+            if (element.classList.contains('open')) {
+                $('div.leaderboardSidebarBlock').removeClass('open');
+            } else {
+                $('div.leaderboardSidebarBlock').addClass('open');
+            }
+        }
+    </script>
+
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/jquery.easing.min.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='js/scrolling-nav.js') }}"></script>
+
+    </div>
+</body>
+
+</html>
