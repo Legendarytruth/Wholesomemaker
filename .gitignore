@@ -1,1 +1,6 @@
 .vscode
+.idea
+venv
+onwork
+__pycache__
+.env
