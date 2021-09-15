@@ -1,5 +1,15 @@
 import discord
 import discord_slash.cog_ext
+from PIL import Image
+from PIL import ImageFont
+from PIL import ImageDraw
+import io
+import os
+from io import BytesIO
+from dotenv import load_dotenv
+import requests
+import random
+import aiohttp
 from discord.ext import commands
 from pymongo import MongoClient
 from discord.ext.commands import cooldown, BucketType
@@ -7,24 +17,21 @@ from discord_slash import *
 from discord_slash.utils.manage_commands import create_option
 from discord_slash.utils.manage_components import create_button, create_actionrow
 
-bot_channel = 812211967095472149
+load_dotenv()
+
+bot_channel = 808958457855344640
 botcommands_channel = 808958457855344640
 talk_channels = [812211967095472149, 825248166713622548, 866608473964544010, 866608518365708298, 812170448124510220, 817385869627097128, 807476822111420416, 830222254942978069, 824091824540614706, 857649456145235978, 806964929718255619, 818815530647158784, 808958457855344640,
                  826078465781661736, 826078419888242708, 818815613266952193, 839444297542533140, 837680350716362814, 829866889937289257, 823152070189383700, 851398046951669770, 849008568178180137, 823573307215052830, 849130878701010965, 834312211454754826, 834312245571747842]
 
 talk_channels_noadmin = [812211967095472149, 825248166713622548, 812170448124510220, 817385869627097128, 807476822111420416, 830222254942978069, 824091824540614706, 857649456145235978, 806964929718255619, 818815530647158784, 808958457855344640,
-                         826078465781661736, 826078419888242708, 818815613266952193, 839444297542533140, 837680350716362814, 829866889937289257, 823152070189383700, 851398046951669770, 849008568178180137, 823573307215052830, 849130878701010965, 834312211454754826, 834312245571747842]
+                         826078465781661736, 826078419888242708, 818815613266952193, 839444297542533140, 837680350716362814, 829866889937289257, 823152070189383700, 851398046951669770, 849008568178180137, 823573307215052830, 849130878701010965, 834312211454754826, 834312245571747842, 881514276836241419, 881508454731247676, 881508535886819349]
 
-
-# role rewards
-level = ["Thug", "Hustler", "Soldier", "Trigger", "Enforcer",
-         "Facilitator", "Public Enemy", "Shot Caller", "Street Boss", "Right Hand", "Kingpin"]
-
-# role rewards count
+level = ["thug", "hustler", "soldier", "trigger", "enforcer",
+         "facilitator", "public enemy", "shot caller", "street boss", "right hand", "active"]
 levelnum = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
 
-cluster = MongoClient(
-    "your mongodb uri")
+cluster = MongoClient(os.getenv("MONGODB_URL"))
 
 levelling = cluster["discord"]["levelling"]
 
@@ -94,12 +101,15 @@ class levelsys(commands.Cog):
 
         if not message.author.bot:
             if stats is None:
+                memek = random.randint(5, 20)
                 newuser = {"id": message.author.id,
-                           "xp": 100, "username": message.author.name, "discrim": message.author.discriminator, "messagecount": 1, "image_url": imgp, "level": 0}
+                           "xp": memek, "username": message.author.name, "discrim": message.author.discriminator, "messagecount": 1, "image_url": imgp, "level": 0}
                 levelling.insert_one(newuser)
 
             else:
-                xp = stats["xp"] + 5
+                kampung = random.randint(5, 20)
+                kimak = stats["xp"]
+                xp = kimak + kampung
                 kung = stats["messagecount"] + 1
                 img = str(message.author.avatar_url)
                 debus = stats["level"]
@@ -114,15 +124,15 @@ class levelsys(commands.Cog):
                     hitungpesan = stats["messagecount"]
                     gambar = stats["image_url"]
                     levelling.update_one({"id": message.author.id}, {
-                        "$set": {"xp": ekspi, "username": message.author.name, "discrim": message.author.discriminator, "messagecount": hitungpesan, "image_url": gambar, "level": lvl}})
+                        "$set": {"level": lvl}})
+                    for i in range(len(level)):
+                        if lvl == levelnum[i]:
+                            await message.author.add_roles(discord.utils.get(message.author.guild.roles, name=level[i]))
+
                 xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
                 if xp == 0:
                     channel = self.client.get_channel(812211967095472149)
                     await channel.send(f"Congratulations, {message.author.display_name}. You've reached **level {lvl}**.")
-
-                for i in range(len(level)):
-                    if lvl == levelnum[i]:
-                        await message.author.add_roles(discord.utils.get(message.author.guild.roles, name=level[i]))
 
     @cog_ext.cog_slash(name="mytop",
                        description="Know your or someone Rank.",
@@ -157,25 +167,75 @@ class levelsys(commands.Cog):
                     lvl += 1
                 xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
                 boxes = int((xp/(200*((1/2) * lvl)))*20)
+                apasihmaulu = boxes * "■" + (20-boxes) * "□"
                 rankings = levelling.find().sort("xp", -1)
                 for x in rankings:
                     rank += 1
                     if stats["id"] == x["id"]:
                         break
-                embed = discord.Embed(
-                    title="{}'s level stats".format(member.name), colour=discord.Colour.dark_purple())
-                embed.add_field(
-                    name="Name", value=member.mention, inline=True)
-                embed.add_field(
-                    name="Experience", value=f"{exp} XP", inline=False)
-                embed.add_field(
-                    name="Rank", value=f"#{rank}", inline=True)
-                embed.add_field(
-                    name="Level", value=f"{lvl}", inline=True)
-                embed.add_field(name=f"[{xp}/{int(200*((1/2)*lvl))} XP]", value=boxes * "■" + (
-                    20-boxes) * "□", inline=False)
-                embed.set_thumbnail(url=member.avatar_url)
-                await ctx.send(embed=embed)
+                # Replace infoimgimg.png with your background image.
+                if member.id == 351147060956889088:
+                    img = Image.open("assets/rank.png")
+                elif member.id == 678302535202635797:
+                    img = Image.open("assets/premium/meh.png")
+                elif member.id == 494870400153550859:
+                    img = Image.open("assets/premium/fib.png")
+                elif member.id == 616469711995142145:
+                    img = Image.open("assets/premium/neko.png")
+                else:
+                    img = Image.open("assets/rank.png")
+                draw = ImageDraw.Draw(img)
+                # Make sure you insert a valid font from your folder.
+                font = ImageFont.truetype("assets/Quotable.otf", 36)
+                eggs = ImageFont.truetype("assets/Quotable.otf", 30)
+                font3 = ImageFont.truetype("assets/Quotable.otf", 60)
+                # Make sure you insert a valid font from your folder.
+                font1 = ImageFont.truetype("assets/ARIALUNI.otf", 35)
+                font2 = ImageFont.truetype("assets/DejaVuSerif.otf", 34)
+                #    (x,y)::↓ ↓ ↓ (text)::↓ ↓     (r,g,b)::↓ ↓ ↓
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(str(member.avatar_url)) as response:
+                        image = await response.read()
+                avatar = Image.open(BytesIO(image)).resize(
+                    (180, 180), Image.LANCZOS).convert("RGB")
+                c = Image.open(
+                    "assets/cover.png").resize((180, 180)).convert("RGBA")
+                if str(member.status) == "online":
+                    d = Image.open(
+                        "assets/statuses/online.png").resize((55, 55))
+
+                elif str(member.status) == "offline" or "invisible":
+                    d = Image.open(
+                        "assets/statuses/offline.png").resize((55, 55))
+
+                elif str(member.status) == "dnd":
+                    d = Image.open("assets/statuses/dnd.png").resize((55, 55))
+
+                elif str(member.status) == "idle":
+                    d = Image.open("assets/statuses/idle.png").resize((55, 55))
+                img.paste(avatar, (50, 60), c)
+                img.paste(d, (172, 180), d)
+                draw.text(
+                    (242, 120), f"{member.name}#{member.discriminator}", (255, 255, 255), font=font1)
+                draw.text(
+                    (732, 130), f"{xp} / {int(200*((1/2)*lvl))} XP", (255, 255, 255), font=eggs)
+                draw.text(
+                    (740, 70), f"Level", (98, 211, 245), font=font)
+                draw.text(
+                    (802, 50), f"{lvl}", (98, 211, 245), font=font3)
+                draw.text(
+                    (600, 70), f"Rank ", (255, 255, 255), font=font)
+                draw.text(
+                    (670, 50), f"#{rank}", (255, 255, 255), font=font3)
+                draw.text(
+                    (242, 165), f"{apasihmaulu}", (98, 211, 245), font=font2)
+                # Change Leveling/infoimg2.png if needed.
+                img.save('assets/image.png')
+                ffile = discord.File("assets/image.png")
+                await ctx.send(file=ffile)
+                # Make sure you insert a valid font from your folder.
+        else:
+            return await ctx.send(f"<:cross:839158779815657512> **{ctx.member.display_name}**, that command is disabled in this channel.")
 
     def better_time(self, cd: int):
         time = f"{cd} seconds"
@@ -220,7 +280,7 @@ class levelsys(commands.Cog):
                                 required=True
                             )
                         ])
-    @ commands.has_role(845586428057354253)
+    @ commands.has_role(825578057498099732)
     async def givexp(self, ctx: SlashContext, member: discord.Member, *, exp: int):
 
         stats = levelling.find_one({"id": member.id})
@@ -305,8 +365,16 @@ class levelsys(commands.Cog):
     async def top(self, ctx: SlashContext):
         if (ctx.channel.id == bot_channel):
             button = create_button(5, label='Go to your leaderboard',
-                                   url='https://wsv-leaderboards.herokuapp.com/')
+                                   url='https://wsv-leaderboards1.herokuapp.com/')
+            # button = create_button(5, label='Go to your leaderboard',
+            # url='https://wholesome-discord-server-2.herokuapp.com/')
+            # button = create_button(5, label='Go to your leaderboard',
+            # url='https://wsv-leaderboards.herokuapp.com/')'
+            # button = create_button(5, label='Go to your leaderboard',
+            # url='https://wholesome-discord-server-1.herokuapp.com/')
             await ctx.send("Here you go! :man_mage:", components=[create_actionrow(button)])
+        else:
+            return await ctx.send(f"<:cross:839158779815657512> **{ctx.member.display_name}**, that command is disabled in this channel.")
 
 
 def setup(client):
