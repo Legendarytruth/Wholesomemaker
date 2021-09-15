@@ -131,7 +131,7 @@ class levelsys(commands.Cog):
 
                 xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
                 if xp == 0:
-                    channel = self.client.get_channel(812211967095472149)
+                    channel = self.client.get_channel(808958457855344640)
                     await channel.send(f"Congratulations, {message.author.display_name}. You've reached **level {lvl}**.")
 
     @cog_ext.cog_slash(name="mytop",
@@ -235,7 +235,7 @@ class levelsys(commands.Cog):
                 await ctx.send(file=ffile)
                 # Make sure you insert a valid font from your folder.
         else:
-            return await ctx.send(f"<:cross:839158779815657512> **{ctx.member.display_name}**, that command is disabled in this channel.")
+            return await ctx.send(f"<:cross:839158779815657512> **{ctx.member.display_name}**, that command is disabled in this channel.", hidden=True)
 
     def better_time(self, cd: int):
         time = f"{cd} seconds"
@@ -262,7 +262,8 @@ class levelsys(commands.Cog):
             # msg is the message you would like to send, the format is how it formats the seconds left.
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> **{ctx.author.display_name}** you need to wait {self.better_time(cd)} to use that command again.", colour=discord.Colour.red())
-        await ctx.send(embed=embed)  # sends the error message to the channel
+        # sends the error message to the channel
+        await ctx.send(embed=embed, hidden=True)
 
     @ cog_ext.cog_slash(name="givexp",
                         description="Give you or this User some XP Rewards.",
@@ -300,7 +301,7 @@ class levelsys(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> You must have the <@&845586428057354253> roles to use this command!")
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, hidden=True)
 
     @ cog_ext.cog_slash(name="resetxp",
                         description="Reset this User XP.",
@@ -324,7 +325,7 @@ class levelsys(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> You must have the <@&823029389154844743> roles to use this command!")
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, hidden=True)
 
     @ cog_ext.cog_slash(name="setxp",
                         description="Set you or this User XP.",
@@ -358,7 +359,7 @@ class levelsys(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> You must have the <@&823029389154844743> roles to use this command!")
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, hidden=True)
 
     @ cog_ext.cog_slash(name="top", description="Rankings for most messages sent.")
     # @ commands.cooldown(1, 300, commands.BucketType.user)
@@ -374,7 +375,7 @@ class levelsys(commands.Cog):
             # url='https://wholesome-discord-server-1.herokuapp.com/')
             await ctx.send("Here you go! :man_mage:", components=[create_actionrow(button)])
         else:
-            return await ctx.send(f"<:cross:839158779815657512> **{ctx.member.display_name}**, that command is disabled in this channel.")
+            return await ctx.send(f"<:cross:839158779815657512> **{ctx.member.display_name}**, that command is disabled in this channel.", hidden=True)
 
 
 def setup(client):

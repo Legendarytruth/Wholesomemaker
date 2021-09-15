@@ -43,7 +43,7 @@ class ghostorg(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> You must have the <@&825578057498099732> roles to use this command!")
-            await ctx.channel.send(embed=embed)
+            await ctx.channel.send(embed=embed, hidden=True)
 
 
 def setup(client):

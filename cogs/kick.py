@@ -61,7 +61,7 @@ class kick(commands.Cog):
             await member.send(f'You have been kicked on **{ctx.guild}** for the following reason: {reason}')
             embed = discord.Embed(
                 description=f"<:check:839158727512293406> Successfully Kicked {member} for: {reason}")
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, hidden=True)
             await member.kick(reason=reason)
             channel = self.client.get_channel(831215570631393392)
             embed = discord.Embed(
@@ -74,7 +74,7 @@ class kick(commands.Cog):
             await member.send(f'You have been kicked on **{ctx.guild}** for the following reason: {reason}')
             embed = discord.Embed(
                 description=f"<:check:839158727512293406> Successfully Kicked {member} for: {reason}")
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, hidden=True)
             await member.kick(reason=reason)
             channel = self.client.get_channel(831215570631393392)
             embed = discord.Embed(
@@ -86,7 +86,7 @@ class kick(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> You must have the <@&845586428057354253> roles to use this command!")
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, hidden=True)
 
 
 def setup(client):

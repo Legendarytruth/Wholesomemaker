@@ -26,10 +26,10 @@ class hug(commands.Cog):
     async def hug(self, ctx, *, member: discord.Member = None):
 
         if member == ctx.author:
-            return await ctx.send(":neutral_face: W.. wait, You can't hug yourself.. \n How ruud you are :pensive:")
+            return await ctx.send(":neutral_face: W.. wait, You can't hug yourself.. \n How ruud you are :pensive:", hidden=True)
 
         if member is None:
-            return await ctx.send(":neutral_face: W.. wait, You can't hug yourself.. \n How ruud you are :pensive:")
+            return await ctx.send(":neutral_face: W.. wait, You can't hug yourself.. \n How ruud you are :pensive:", hidden=True)
 
         async with aiohttp.ClientSession() as session:
             # Make a request

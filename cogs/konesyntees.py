@@ -38,22 +38,22 @@ class konesyntees(commands.Cog):
     async def konesyntees(self, ctx: SlashContext, input: str, voice: Optional[int] = 1, speed: Optional[int] = -4):
 
         if len(str(input)) > 100:
-            return await ctx.reply("Text too long! (<100)")
+            return await ctx.reply("Text too long! (<100)", hidden=True)
 
         if len(str(input)) < 5:
-            return await ctx.reply("An error occurred: the command must have some sort of params")
+            return await ctx.reply("An error occurred: the command must have some sort of params", hidden=True)
 
         if input is None:
-            return await ctx.reply("the text can't be empty")
+            return await ctx.reply("the text can't be empty", hidden=True)
 
         if voice > 3:
-            return await ctx.reply("voice must be in the range of 0 .. 3")
+            return await ctx.reply("voice must be in the range of 0 .. 3", hidden=True)
 
         if speed < -9:
-            return await ctx.reply("speed must be in the range of -9 .. 9")
+            return await ctx.reply("speed must be in the range of -9 .. 9", hidden=True)
 
         if speed > 9:
-            return await ctx.reply("speed must be in the range of -9 .. 9")
+            return await ctx.reply("speed must be in the range of -9 .. 9", hidden=True)
 
         async with aiohttp.ClientSession() as session:
             # Make a request

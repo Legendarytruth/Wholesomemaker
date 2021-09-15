@@ -42,7 +42,7 @@ class bigemote(commands.Cog):
                     if resp.status != 200:
                         er = "<:cross:839158779815657512> Error: Emote not found."
                         e = discord.Embed(title=er, color=discord.Color.red())
-                        await ctx.send(embed=e)
+                        await ctx.send(embed=e, hidden=True)
                         return
                     img = await resp.read()
 
@@ -56,14 +56,14 @@ class bigemote(commands.Cog):
                 except asyncio.TimeoutError:
                     er = "<:cross:839158779815657512> Error: Timed Out. Try again in a few seconds"
                     e = discord.Embed(title=er, color=discord.Color.red())
-                    await ctx.send(embed=e)
+                    await ctx.send(embed=e, hidden=True)
                     return
                 await ctx.send(file=discord.File(img, filename=name + '.png'))
 
         except Exception as e:
             er = "<:cross:839158779815657512> Error, couldn't send emote."
             e = discord.Embed(title=er, color=discord.Color.red())
-            await ctx.send(embed=e)
+            await ctx.send(embed=e, hidden=True)
 
 
 @staticmethod

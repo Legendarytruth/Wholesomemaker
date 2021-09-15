@@ -37,18 +37,18 @@ class ban(commands.Cog):
         except:
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> Failed to send DM to <@{user_id}>. They probably had their DM's closed.")
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, hidden=True)
         await ctx.guild.ban(user, reason=reason)
         embed = discord.Embed(
             description=f"<:check:839158727512293406> Successfully banned {user} for: {reason}")
-        await ctx.send(embed=embed)
+        await ctx.send(embed=embed, hidden=True)
 
     @ban.error
     async def ban_error(self, ctx, error):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> You must have the <@&845586428057354253> roles to use this command!")
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, hidden=True)
 
 
 def setup(client):

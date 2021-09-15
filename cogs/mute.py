@@ -55,7 +55,7 @@ class mute(commands.Cog):
             await channel.send(embed=embed)
             success = discord.Embed(
                 description=f"<:check:839158727512293406> **{member.mention}** has been muted for following reason : {reason}", colour=discord.Colour.green())
-            await ctx.send(embed=success)
+            await ctx.send(embed=success, hidden=True)
             return await member.send(f'You have been muted on **{ctx.guild}** for the following reason: {reason}')
         else:
             role = discord.utils.get(
@@ -70,7 +70,7 @@ class mute(commands.Cog):
             await channel.send(embed=embed)
             success = discord.Embed(
                 description=f"<:check:839158727512293406> **{member.mention}** has been muted for following reason : {reason}", colour=discord.Colour.green())
-            await ctx.send(embed=success)
+            await ctx.send(embed=success, hidden=True)
             await member.send(f'You have been muted on **{ctx.guild}** for the following reason: {reason}')
 
     @mute.error
@@ -78,7 +78,7 @@ class mute(commands.Cog):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> You must have the <@&825578057498099732> roles to use this command!")
-            await ctx.channel.send(embed=embed)
+            await ctx.channel.send(embed=embed, hidden=True)
 
 
 def setup(client):

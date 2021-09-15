@@ -92,7 +92,8 @@ class wheelspin(commands.Cog):
                 cd = 1
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> **{ctx.author.name}**, you need to wait {self.better_time(cd)} to use that command again.")
-        await ctx.send(embed=embed)  # sends the error message to the channel
+        # sends the error message to the channel
+        await ctx.send(embed=embed, hidden=True)
 
 
 def setup(client):

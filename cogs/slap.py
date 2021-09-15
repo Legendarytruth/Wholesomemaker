@@ -27,7 +27,7 @@ class slap(commands.Cog):
     async def slap(self, ctx: SlashContext, *, member: discord.Member):
 
         if member == ctx.author:
-            return await ctx.send("You can't slap yourself :confused:")
+            return await ctx.send("You can't slap yourself :confused:", hidden=True)
 
         async with aiohttp.ClientSession() as session:
             # Make a request

@@ -72,7 +72,7 @@ class warnsys(commands.Cog):
 
         if member == 351147060956889088:
             ctx.send(
-                f"<:cross:839158779815657512> {ctx.author} You can't warn Server Owner.")
+                f"<:cross:839158779815657512> {ctx.author} You can't warn Server Owner.", hidden=True)
 
         stats = warning.find_one({"id": member.id})
         if stats is None:
@@ -83,7 +83,7 @@ class warnsys(commands.Cog):
                 description=f"<:check:839158727512293406> **{ctx.author.mention}** warns **{member.mention}** for following reason : {reason}", colour=discord.Colour.green())
             await channel.send(embed=embed)
             await member.send(f'You have been warned on **{ctx.guild}** for the following reason: {reason}')
-            await ctx.send(f'**{member.mention}** has been warned for the following reason: {reason}')
+            await ctx.send(f'**{member.mention}** has been warned for the following reason: {reason}', hidden=True)
         else:
             warncount = stats["warncount"] + 1
             warning.update_one({"id": member.id}, {"$set": {
@@ -93,14 +93,14 @@ class warnsys(commands.Cog):
                 description=f"<:check:839158727512293406> **{ctx.author.mention}** warns **{member.mention}** for following reason : {reason}", colour=discord.Colour.green())
             await channel.send(embed=embed)
             await member.send(f'You have been warned on **{ctx.guild}** for the following reason: {reason}')
-            await ctx.send(f'**{member.mention}** has been warned for the following reason: {reason}')
+            await ctx.send(f'**{member.mention}** has been warned for the following reason: {reason}', hidden=True)
 
     @warn.error
     async def warn_error(self, ctx, error):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> You must have the <@&825578057498099732> roles to use this command!")
-            await ctx.channel.send(embed=embed)
+            await ctx.channel.send(embed=embed, hidden=True)
 
     @cog_ext.cog_slash(name="resetwarn",
                        description="Reset this User Warnings.",
@@ -117,7 +117,7 @@ class warnsys(commands.Cog):
         if member is None:
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> **{ctx.author.name}**, you can't reset your own Warnings!", colour=discord.Colour.red())
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, hidden=True)
         else:
             # if ctx.channel.id == botcommands_channel:
             warning.delete_one({"id": member.id})
@@ -127,14 +127,14 @@ class warnsys(commands.Cog):
             await channel.send(embed=embed)
             embed = discord.Embed(
                 description=f"<:check:839158727512293406>  **{member.name}**'s Warnings has been resetted.", colour=discord.Colour.green())
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, hidden=True)
 
     @resetwarn.error
     async def resetwarn_error(self, ctx, error):
         if isinstance(error, commands.MissingRole):
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> You must have the <@&823029389154844743> roles to use this command!")
-            await ctx.channel.send(embed=embed)
+            await ctx.send(embed=embed, hidden=True)
 
     @cog_ext.cog_slash(name="warnings", description="Know your warnings.")
     @commands.cooldown(1, 86400, commands.BucketType.user)
@@ -167,7 +167,7 @@ class warnsys(commands.Cog):
             #    name=":pushpin: Bans", value="> If you're feeling getting a softban, Please Appeal it [Here](https://gnztmpz.eu.org)", inline=False)
             embed.set_thumbnail(url=ctx.author.avatar_url)
             await ctx.author.send(embed=embed)
-            await ctx.send("I have DM'ed you with your Warning List. You can see your warnings again in 24h.")
+            await ctx.send("I have DM'ed you with your Warning List. You can see your warnings again in 24h.", hidden=True)
         else:
             return await ctx.send(f"<:cross:839158779815657512> **{ctx.author.mention}**, that command is disabled in this channel.")
 
@@ -197,7 +197,7 @@ class warnsys(commands.Cog):
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> **{ctx.author.name}**, you need to wait {self.better_time(cd)} to use that command again.", colour=discord.Colour.red())
             # sends the error message to the channel
-            await ctx.send(embed=embed)
+            await ctx.send(embed=embed, hidden=True)
 
 
 def setup(client):

@@ -69,7 +69,7 @@ class lord(commands.Cog):
             # msg is the message you would like to send, the format is how it formats the seconds left.
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> **{ctx.author.display_name}** you need to wait {self.better_time(cd)} to use that command again.", colour=discord.Colour.red())
-        await ctx.send(embed=embed)  # sends the error message to the channel
+        await ctx.send(embed=embed, hidden=True)  # sends the error message to the channel
 
 
 def setup(client):

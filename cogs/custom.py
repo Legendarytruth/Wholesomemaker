@@ -20,7 +20,7 @@ class custom(commands.Cog):
     # put this on, if the server is not currently lockdowned.
     @commands.command()
     async def invite(self, ctx):
-        await ctx.reply(f'Hi, If you wanna invite friends to this server, Please use this Server Invite! \n \n https://discord.gg/zHa9pHkCUg \n \n**ProTip** : For Invite Tracking Purposes, *Please Use This Invite Instead Creating a New One*. Thanks <:emoji_1:821804972059656262>', mention_author=False)
+        await ctx.reply(f'https://discord.gg/HKjmPqJyre', mention_author=False)
 
     # put this on, if the server is currently lockdowned.
     # @commands.command()
@@ -38,15 +38,6 @@ class custom(commands.Cog):
             member = ctx.author
 
         await ctx.reply(f'Hey {member.mention}, You can Assign/Resign your Roles by React on <#806958144404062229>', mention_author=False)
-
-    @commands.command()
-    async def links(self, ctx, *, member:  discord.Member = None):
-
-        if member is None:
-            member = ctx.author
-
-        await ctx.reply(f'Hey {member.mention}, Wanna see some Useful Links?\nHere, Check this out <#824463250980339755>..', mention_author=False)
-
 
 def setup(client):
     client.add_cog(custom(client))

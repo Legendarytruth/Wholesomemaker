@@ -48,7 +48,7 @@ class rep(commands.Cog):
         else:
             embed = discord.Embed(
                 description=f"<:cross:839158779815657512> **{ctx.author.display_name}**, that command is disabled in this channel.")
-            return await ctx.send(embed=embed)
+            return await ctx.send(embed=embed, hidden=True)
 
     @cog_ext.cog_slash(name="toprep", description="Rankings for most Wholesome emojis sent.")
     async def toprep(self, ctx: SlashContext):
@@ -70,7 +70,7 @@ class rep(commands.Cog):
                     break
             await ctx.send(embed=embed)
         else:
-            return await ctx.send(f"<:cross:839158779815657512> **{ctx.member.name}**, that command is disabled in this channel.")
+            return await ctx.send(f"<:cross:839158779815657512> **{ctx.member.name}**, that command is disabled in this channel.", hidden=True)
 
 
 def setup(client):
