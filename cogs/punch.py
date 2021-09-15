@@ -26,12 +26,15 @@ class punch(commands.Cog):
                        ])
     async def punch(self, ctx: SlashContext, *, member: discord.Member = None):
 
+        if member == ctx.author:
+            return await ctx.send("You can't punch yourself :confused:")
+
         async with aiohttp.ClientSession() as session:
             # Make a request
             request = await session.get('https://neko-love.xyz/api/v1/punch')
             dogjson = await request.json()  # Convert it to a JSON dictionary
         embed = discord.Embed(
-            title=f"**{ctx.author.name}** punching **{member.name}**", color=discord.Color.purple())  # Create embed
+            title=f"**{ctx.author.display_name}** punching **{member.display_name}**", color=discord.Color.purple())  # Create embed
         # Set the embed image to the value of the 'link' key
         embed.set_image(url=dogjson['url'])
         embed.set_footer(
