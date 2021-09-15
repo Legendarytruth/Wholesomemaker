@@ -5,3 +5,8 @@ pymongo
 dnspython
 validators
 pygithub
+python-dotenv
+pillow
+flask
+flask-pymongo
+gunicorn
