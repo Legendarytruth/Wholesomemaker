@@ -1,14 +1,17 @@
 import discord
 import discord_slash.cog_ext
 from discord.ext import commands
+import os
+from dotenv import load_dotenv
 from discord_slash import *
 from discord_slash.utils.manage_commands import create_option
 from discord_slash.utils.manage_components import create_button, create_actionrow
 from github import Github
 
+load_dotenv()
 
-client = Github("github token here :)")
-gist = client.get_gist('fcc0ff545d95d145df34951118cdd765')
+client = Github(os.getenv("GITHUB_TOKEN"))
+gist = client.get_gist(os.getenv("GIST_ID"))
 first_file = list(gist.files.values())[0]
 results = first_file.raw_data['content']
 
