@@ -22,7 +22,7 @@ class prune(commands.Cog):
                                required=True
                            )
                        ])
-    @commands.has_role(825578057498099732)  # dispatch role (head moderators)
+    @commands.has_role(825578057498099732)
     async def prune(self, ctx: SlashContext, amount):
         await ctx.channel.purge(limit=amount)
         # Gets the message the bots just sent.
