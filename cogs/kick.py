@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 import random
 import discord
 import discord_slash.cog_ext
@@ -9,14 +10,13 @@ from typing import Optional
 from pymongo import MongoClient
 from discord.ext.commands import cooldown, BucketType
 
-# talk_channels is the most used channel (which in this case is all channels in Wholesome Series Videos)
-
 talk_channels = [818815530647158784, 818815613266952193, 808958457855344640, 837680350716362814, 815213963871911996, 828968512146898954, 839444297542533140, 825272629559951390,
                  826078465781661736, 826078419888242708, 837720268918882305, 837665514654138480, 829866889937289257, 824809146641154130, 834312211454754826, 834312245571747842,
                  817712543795249182, 816763959931043861]
 
-cluster = MongoClient(
-    "your mongodb uri")
+load_dotenv()
+
+cluster = MongoClient(os.getenv("MONGODB_URL"))
 
 kicked = cluster["discord"]["kicks"]
 
@@ -25,7 +25,6 @@ class kick(commands.Cog):
     def __init__(self, client):
         self.client = client
 
-    # this cog.listener is to log all people kick count, based on sending a message. there is no problem at all.. move along folks :)
     @commands.Cog.listener()
     async def on_message(self, message):
         kicks = kicked.find_one({"id": message.author.id})
@@ -52,7 +51,7 @@ class kick(commands.Cog):
                                required=False
                            )
                        ])
-    @commands.has_role(845586428057354253)  # dispatch role (head moderators)
+    @commands.has_role(845586428057354253)
     async def kick(self, ctx: SlashContext, member:  discord.Member, *, reason: Optional[str] = "No reason provided."):
         kicks = kicked.find_one({"id": ctx.member.id})
         if kicks is None:
@@ -64,8 +63,7 @@ class kick(commands.Cog):
                 description=f"<:check:839158727512293406> Successfully Kicked {member} for: {reason}")
             await ctx.send(embed=embed)
             await member.kick(reason=reason)
-            channel = self.client.get_channel(
-                831215570631393392)  # server-logs channel
+            channel = self.client.get_channel(831215570631393392)
             embed = discord.Embed(
                 description=f"<:check:839158727512293406> **{ctx.author.mention}** kicks **{member.mention}** for following reason : {reason}", colour=discord.Colour.green())
             await channel.send(embed=embed)
@@ -78,8 +76,7 @@ class kick(commands.Cog):
                 description=f"<:check:839158727512293406> Successfully Kicked {member} for: {reason}")
             await ctx.send(embed=embed)
             await member.kick(reason=reason)
-            channel = self.client.get_channel(
-                831215570631393392)  # server-logs channel
+            channel = self.client.get_channel(831215570631393392)
             embed = discord.Embed(
                 description=f"<:check:839158727512293406> **{ctx.author.mention}** kicks **{member.mention}** for following reason : {reason}", colour=discord.Colour.green())
             await channel.send(embed=embed)
