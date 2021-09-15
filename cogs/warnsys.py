@@ -2,12 +2,16 @@ import discord
 import discord_slash.cog_ext
 from discord.ext import commands
 from pymongo import MongoClient
+import os
+from dotenv import load_dotenv
 from discord.ext.commands import cooldown, BucketType
 from discord_slash import *
 from discord_slash.utils.manage_commands import create_option
 
-cluster = MongoClient(
-    "your mongodb uri")
+load_dotenv()
+
+cluster = MongoClient(os.getenv("MONGODB_URL"))
+
 
 warning = cluster["discord"]["warning"]
 mute = cluster["discord"]["muted"]
