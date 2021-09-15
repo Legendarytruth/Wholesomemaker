@@ -6,12 +6,15 @@ from discord_slash.utils.manage_commands import create_option
 from discord import Embed
 from typing import Optional
 import datetime
+import os
+from dotenv import load_dotenv
 import asyncio
 from pymongo import MongoClient
 from discord.ext.commands import cooldown, BucketType
 
-cluster = MongoClient(
-    "your mongodb uri")
+load_dotenv()
+
+cluster = MongoClient(os.getenv("MONGODB_URL"))
 
 muted = cluster["discord"]["muted"]
 
@@ -24,7 +27,7 @@ class mute(commands.Cog):
                        description="Mute a user.",
                        options=[
                            create_option(
-                               name="user_id",
+                               name="member",
                                description="Who is the Person Should I Mute?",
                                option_type=6,
                                required=True
@@ -36,17 +39,17 @@ class mute(commands.Cog):
                                required=False
                            )
                        ])
-    @commands.has_role(825578057498099732)  # dispatch role (head moderators)
+    @commands.has_role(825578057498099732)
     async def mute(self, ctx: SlashContext, member: discord.Member, *, reason: str):
 
         stats = muted.find_one({"id": member.id})
         if stats is None:
-            role = discord.utils.get(ctx.guild.roles, name='Muted')
-            await member.add_roles("Muted", reason=reason)
+            role = discord.utils.get(
+                ctx.guild.roles, name='suffering from dunning kruger')
+            await member.add_roles(role, reason=reason)
             muted.insert_one(
                 {"id": member.id, "mutecount": 1, "reason": reason})
-            channel = self.client.get_channel(
-                831215570631393392)  # server-logs
+            channel = self.client.get_channel(831215570631393392)
             embed = discord.Embed(
                 description=f"<:check:839158727512293406> **{ctx.author.mention}** mute **{member.mention}** for following reason : {reason}", colour=discord.Colour.green())
             await channel.send(embed=embed)
@@ -55,13 +58,13 @@ class mute(commands.Cog):
             await ctx.send(embed=success)
             return await member.send(f'You have been muted on **{ctx.guild}** for the following reason: {reason}')
         else:
-            role = discord.utils.get(ctx.guild.roles, name='Muted')
+            role = discord.utils.get(
+                ctx.guild.roles, name='suffering from dunning kruger')
             await member.add_roles(role, reason=reason)
             mutecount = stats["mutecount"] + 1
             muted.update_one({"id": member.id}, {"$set": {
                 "mutecount": mutecount, "reason": reason}})
-            channel = self.client.get_channel(
-                831215570631393392)  # server-logs
+            channel = self.client.get_channel(831215570631393392)
             embed = discord.Embed(
                 description=f"<:check:839158727512293406> **{ctx.author.mention}** mute **{member.mention}** for following reason : {reason}", colour=discord.Colour.green())
             await channel.send(embed=embed)
