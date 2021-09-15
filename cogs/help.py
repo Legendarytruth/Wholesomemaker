@@ -37,8 +37,10 @@ class help(commands.Cog):
                 name='_ _', value='_Use [`/`] help [command name] to see more info on a command._', inline=False)
             embed.add_field(name='**Fun commands**',
                             value='pat, hug, kill, kiss, neko, smug, sad, slap, meme, dog', inline=False)
+            embed.add_field(name='**Taco Bot commands**',
+                            value='lord, eat, balance, pay', inline=False)
             embed.add_field(name='**Economic commands**',
-                            value='rank, levels, wheelspin', inline=False)
+                            value='mytop, top, wheelspin', inline=False)
             embed.add_field(name='**Server Related commands**',
                             value='invite, rules, roles, links, warnings', inline=False)
             embed.add_field(name='**Misc commands**',
@@ -53,9 +55,9 @@ class help(commands.Cog):
                 text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
 
             button = create_button(5, label='Github Repository',
-                                   url='https://github.com/GNZTMPZ/Samantha')
+                                   url='https://github.com/GNZTMPZ/Wholesomemaker-1')
             button2 = create_button(
-                5, label='Github Issues', url='https://github.com/GNZTMPZ/Samantha/issues/2')
+                5, label='Github Issues', url='https://github.com/GNZTMPZ/Wholesomemaker-1/issues/2')
 
             return await ctx.send(embed=embed, components=[create_actionrow(button), create_actionrow(button2)])
 
@@ -252,27 +254,27 @@ class help(commands.Cog):
 
             return await ctx.send(embed=embed)
 
-        if category == "levels":
+        if category == "top":
             embed = discord.Embed(
                 colour=discord.Colour.purple()
             )
             embed.add_field(name='__Leaderboard Command__',
-                            value='Receive Wholesome Series Videos Leaderboards', inline=False)
+                            value='Rankings for most messages sent.', inline=False)
             embed.add_field(name='__Aliases:__', value='None', inline=False)
             embed.add_field(name='__How to use:__',
-                            value='/levels', inline=False)
+                            value='/top', inline=False)
 
             return await ctx.send(embed=embed)
 
-        if category == "rank":
+        if category == "mytop":
             embed = discord.Embed(
                 colour=discord.Colour.purple()
             )
-            embed.add_field(name='__Rank Command__',
-                            value='*See your current rank', inline=False)
+            embed.add_field(name='__mytop Command__',
+                            value='*Know your or someone Rank.', inline=False)
             embed.add_field(name='__Aliases:__', value='None', inline=False)
             embed.add_field(name='__How to use:__',
-                            value='/rank <userid/tag> (optional)', inline=False)
+                            value='/mytop <userid/tag> (optional)', inline=False)
 
             return await ctx.send(embed=embed)
 
@@ -466,6 +468,51 @@ class help(commands.Cog):
             embed.add_field(name='__How to use:__',
                             value='/resetwarn <userid/tag>', inline=False)
 
+            return await ctx.send(embed=embed)
+
+        if category == "lord" or "/lord":
+            embed = discord.Embed(
+                colour=discord.Colour.purple()
+            )
+            embed.add_field(name='__Lord Command__',
+                            value="Shows you the name of the richest of em' all!", inline=False)
+            embed.add_field(name='__Aliases:__', value='None', inline=False)
+            embed.add_field(name='__How to use:__',
+                            value='/lord', inline=False)
+
+            return await ctx.send(embed=embed)
+
+        if category == "eat" or "/eat":
+            embed = discord.Embed(
+                colour=discord.Colour.purple()
+            )
+            embed.add_field(name='__Eat Command__',
+                            value="Eat a single taco in front of everyone.", inline=False)
+            embed.add_field(name='__Aliases:__', value='None', inline=False)
+            embed.add_field(name='__How to use:__',
+                            value='/eat', inline=False)
+            return await ctx.send(embed=embed)
+
+        if category == "pay" or "/pay":
+            embed = discord.Embed(
+                colour=discord.Colour.purple()
+            )
+            embed.add_field(name='__Pay Command__',
+                            value="Allows you to transfer funds to another user.", inline=False)
+            embed.add_field(name='__Aliases:__', value='None', inline=False)
+            embed.add_field(name='__How to use:__',
+                            value='/pay [mention] [amount]', inline=False)
+            return await ctx.send(embed=embed)
+
+        if category == "balance" or "/balance":
+            embed = discord.Embed(
+                colour=discord.Colour.purple()
+            )
+            embed.add_field(name='__Balance Command__',
+                            value="Shows you how many tacos you have.", inline=False)
+            embed.add_field(name='__Aliases:__', value='None', inline=False)
+            embed.add_field(name='__How to use:__',
+                            value='/balance', inline=False)
             return await ctx.send(embed=embed)
 
 
