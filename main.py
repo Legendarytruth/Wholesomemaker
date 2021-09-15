@@ -3,20 +3,24 @@ import discord
 from discord.ext import commands
 from discord import Embed
 import discord.utils
+from dotenv import load_dotenv
 import os
 import datetime
 import asyncio
 import aiohttp
 import random
 from discord.ext.commands import cooldown, BucketType
+from discord import Intents
 from typing import Optional
 from discord.ext import commands
 from discord_slash import SlashCommand
 from discord_slash import SlashContext
 import logging  # for logging things (on testing mode)
 
-intents = discord.Intents.all()
-client = commands.Bot(command_prefix=['/', '!'])
+load_dotenv()
+intents = discord.Intents().all()
+intents.members = True
+client = commands.Bot(command_prefix=['/', '!'], intents=intents)
 slash = SlashCommand(client, sync_commands=True)
 client.remove_command("help")
 
@@ -145,17 +149,17 @@ async def on_ready():
     # or simply don't type anything to go undefined mode
     # version = ("")
 
-    version = ("master")
+    version = os.getenv("VERSION")
 
     if version == "master":
-        await client.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.playing, name=f"🎂 - {version}"))
+        await client.change_presence(status=discord.Status.online, activity=discord.Activity(type=discord.ActivityType.listening, name=f"Matthew™"))
         channel = client.get_channel(831215570631393392)
         embed = discord.Embed(
             description=f"<a:WaveBlob:827337423649505300> Hey there, **Wholesomemaker** initialised with version **{version}**", colour=discord.Colour.green())
         await channel.send(embed=embed)
 
     if version == "testing":
-        await client.change_presence(status=discord.Status.do_not_disturb, activity=discord.Activity(type=discord.ActivityType.playing, name=version))
+        await client.change_presence(status=discord.Status.idle, activity=discord.Activity(type=discord.ActivityType.playing, name=version))
         channel = client.get_channel(864214499656466432)
         embed = discord.Embed(
             description=f"<a:WaveBlob:827337423649505300> Hey there, **Wholesomemaker** initialised with version **{version}**", colour=discord.Colour.green())
@@ -173,7 +177,12 @@ async def on_ready():
             description=f"<a:WaveBlob:827337423649505300> Hey there, **Wholesomemaker** initialised with version **{version}**", colour=discord.Colour.green())
         await channel.send(embed=embed)
 
+    if version is None:
+        channel = client.get_channel(831215570631393392)
+        embed = discord.Embed(
+            description=f"<a:WaveBlob:827337423649505300> Hey there, **Wholesomemaker** initialised with version **None**", colour=discord.Colour.green())
+        await channel.send(embed=embed)
+
     print(f"Wholesomemaker is ready for action with version {version}")
 
-# normal token
-client.run('insert your bot token here :)')
+client.run(os.getenv("BOT_TOKEN"))
