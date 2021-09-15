@@ -1,15 +1,18 @@
 import discord
 import discord_slash.cog_ext
 from discord.ext import commands
+import os
+from dotenv import load_dotenv
 from pymongo import MongoClient
 from discord.ext.commands import cooldown, BucketType
 from discord_slash import *
 from discord_slash.utils.manage_commands import create_option
 
-bot_channel = 808958457855344640  # restrict rep check on #bot-commands channel
+bot_channel = 808958457855344640
 
-cluster = MongoClient(
-    "your mongodb uri")
+load_dotenv()
+
+cluster = MongoClient(os.getenv("MONGODB_URL"))
 
 reps = cluster["discord"]["rep"]
 
