@@ -27,6 +27,22 @@ To run the app, you need:
 
 If you don't own/admin a Discord server, creating one is simple, you can do it from the same menu you join discord servers from.
 
+## .env systems
+
+We're starting to implement the `.env` files.
+
+We don't provide the examples, yet.
+
+Feel free to use these as your starting guide! :v:
+
+```bash
+VERSION="master"
+BOT_TOKEN="https://discord.com/developers/applications"
+MONGODB_URL="your mongodb uri's"
+GITHUB_TOKEN="your github token"
+GIST_ID="provide your github gist id for readme commands!"
+```
+
 ## Docker
 
 Thanks to [🐧 rsetiawan7](https://github.com/rsetiawan7), Wholesomemaker Supports running on Docker. but.. the Active Docker Images has been used for Production Purposes as a Private Repository.
@@ -37,7 +53,21 @@ I assume you already know how to do it, Please Refer to `Docker` folder to Getti
 
 ## Leaderboards Website! 👀
 
-Wholesomemaker using [Flask](https://flask.palletsprojects.com/) as Website Framework. For More info, Please refer to [leaderboards](https://github.com/GNZTMPZ/Wholesomemaker-1/tree/leaderboards) branch. Thanks.
+Wholesomemaker using [Flask](https://flask.palletsprojects.com/) as Website Framework. 
+
+I want to using Next.js as Framework, but.. I still don't know how to do it, so.. i made this leaderboard website using Flask.
+
+Enough bologna, here's the thing..
+
+These website is consist of : 
+
+- Flask Framework in Python, obviously.. `app.py`
+- Web templates in HTML `/templates` 
+- and web assets (css, js, and image) in `/assets`
+
+I'm merging the leaderboards website because of some reasons and also cutting off some unused repos or branch.
+
+Feel free to check out or customize your own leaderboard website. Cheers!
 
 ## Installation
 
@@ -47,7 +77,7 @@ Wholesomemaker using [Flask](https://flask.palletsprojects.com/) as Website Fram
 
   `pip install -r "requirements.txt"`
 
-- next stop, copy your bot token in the end of `main.py`.
+- Don't forget to fill your `.env` using example format up there!
 
 ##### Levelling Systems (Optional)
 
@@ -55,8 +85,6 @@ Wholesomemaker using [Flask](https://flask.palletsprojects.com/) as Website Fram
 
   - after that, you need to make a database on mongodb, refer to this [guide](https://www.mongodb.com/basics/create-database).
     the database name should be `discord` and the collation name is `levelling`
-
-  - and then, you can add the mongodb links on `cogs/levelsys.py`
 
 - if you don't want the levelling systems.
 
@@ -68,13 +96,10 @@ So, basically.. Warning systems are connected with `cogs/mute.py` and `cogs/kick
 
 - To use the Warning systems (assuming you already create a database named `discord`), just create another collation, the name is `muted`, `kicks`, and `warning`
 
-- and then, you can add the mongodb links on `cogs/warnsys.py`, `cogs/mute.py`, and `cogs/kick.py`
-
 - if you don't use the levelling systems.
 
   - you need to make a database on mongodb, refer to this [guide](https://www.mongodb.com/basics/create-database). the database name should be `discord` and the collation name is `muted`, `kicks`, and `warning`
 
-  - and then, you can add the mongodb links on `cogs/warnsys.py`, `cogs/mute.py`, and `cogs/kick.py`
 
 ##### Finalize things...
 
@@ -91,9 +116,10 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore -->
-<table><tr><td align="center"><a href="https://github.com/ZappiestSet81"><img src="https://avatars.githubusercontent.com/u/80011834?v=4" width="100px;" alt="ZappiestSet81"/><br /><sub><b>ZappiestSet81</b></sub></a><br /><a href="#" title="Code">💻</a> <a href="#" title="Ideas, Planning, & Feedback">🤔</a> </td><td align="center"><a href="https://github.com/rsetiawan7"><img src="https://avatars.githubusercontent.com/u/7775372?v=4" width="100px;" alt="rsetiawan7"/><br /><sub><b>rsetiawan7</b></sub></a><br /><a href="https://github.com/GNZTMPZ/Wholesomemaker/blob/master/Dockerfile" title="Code">💻</a></td></tr></table>
+<table><tr><td align="center"><a href="https://github.com/ZappiestSet81"><img src="https://avatars.githubusercontent.com/u/80011834?v=4" width="100px;" alt="ZappiestSet81"/><br /><sub><b>ZappiestSet81</b></sub></a><br /><a href="https://github.com/GNZTMPZ/Wholesomemaker-1/blob/master/cogs/wheelspin.py" title="Code">💻</a> <a href="#" title="Ideas, Planning, & Feedback">🤔</a> </td><td align="center"><a href="https://github.com/rsetiawan7"><img src="https://avatars.githubusercontent.com/u/7775372?v=4" width="100px;" alt="rsetiawan7"/><br /><sub><b>rsetiawan7</b></sub></a><br /><a href="https://github.com/GNZTMPZ/Wholesomemaker-1/blob/master/Dockerfile" title="Code">💻</a></td></tr></table>
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification.
 Contributions of any kind welcome!
+
