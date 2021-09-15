@@ -25,7 +25,7 @@ class unmute(commands.Cog):
                        ])
     @commands.has_role(825578057498099732)
     async def unmute(self, ctx: SlashContext, member: discord.Member):
-        role = discord.utils.get(ctx.guild.roles, name='Muted')
+        role = discord.utils.get(ctx.guild.roles, name='suffering from dunning kruger')
         await member.remove_roles(role)
         embed = discord.Embed(
             description=f"<:check:839158727512293406> Successfully unmuted {member.mention}.")
