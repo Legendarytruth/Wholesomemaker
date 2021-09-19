@@ -4,3 +4,4 @@ venv
 onwork
 __pycache__
 .env
+cogs/nonverified.py

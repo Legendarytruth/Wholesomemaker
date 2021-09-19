@@ -21,15 +21,14 @@ load_dotenv()
 
 bot_channel = 808958457855344640
 botcommands_channel = 808958457855344640
-talk_channels = [812211967095472149, 825248166713622548, 866608473964544010, 866608518365708298, 812170448124510220, 817385869627097128, 807476822111420416, 830222254942978069, 824091824540614706, 857649456145235978, 806964929718255619, 818815530647158784, 808958457855344640,
-                 826078465781661736, 826078419888242708, 818815613266952193, 839444297542533140, 837680350716362814, 829866889937289257, 823152070189383700, 851398046951669770, 849008568178180137, 823573307215052830, 849130878701010965, 834312211454754826, 834312245571747842]
+talk_channels = [866608518365708298, 812170448124510220, 817385869627097128, 807476822111420416, 857649456145235978, 818815530647158784, 888237565298225192, 808958457855344640, 826078465781661736, 826078419888242708, 839444297542533140,
+                 837680350716362814, 884058393977950259, 885696409607749713, 887626615285239818, 829866889937289257, 834312245571747842, 823152070189383700, 884461516332609536, 881514276836241419, 881508454731247676, 851398046951669770, 823573307215052830]
 
-talk_channels_noadmin = [812211967095472149, 825248166713622548, 812170448124510220, 817385869627097128, 807476822111420416, 830222254942978069, 824091824540614706, 857649456145235978, 806964929718255619, 818815530647158784, 808958457855344640,
-                         826078465781661736, 826078419888242708, 818815613266952193, 839444297542533140, 837680350716362814, 829866889937289257, 823152070189383700, 851398046951669770, 849008568178180137, 823573307215052830, 849130878701010965, 834312211454754826, 834312245571747842, 881514276836241419, 881508454731247676, 881508535886819349]
+talk_channels_noadmin = [818815530647158784, 888237565298225192, 808958457855344640, 826078465781661736, 826078419888242708, 839444297542533140, 837680350716362814, 884058393977950259, 885696409607749713,
+                         887626615285239818, 829866889937289257, 834312245571747842, 823152070189383700, 884461516332609536, 881514276836241419, 881508454731247676, 851398046951669770, 823573307215052830, 812170448124510220]
 
 level = ["thug", "hustler", "soldier", "trigger", "enforcer",
          "facilitator", "public enemy", "shot caller", "street boss", "right hand", "active"]
-levelnum = [1, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
 
 cluster = MongoClient(os.getenv("MONGODB_URL"))
 
@@ -101,13 +100,14 @@ class levelsys(commands.Cog):
 
         if not message.author.bot:
             if stats is None:
-                memek = random.randint(5, 20)
+                memek = random.randint(30, 50)
+                # memek = = random.randint(5, 20)
                 newuser = {"id": message.author.id,
                            "xp": memek, "username": message.author.name, "discrim": message.author.discriminator, "messagecount": 1, "image_url": imgp, "level": 0}
                 levelling.insert_one(newuser)
 
             else:
-                kampung = random.randint(5, 20)
+                kampung = random.randint(30, 50)
                 kimak = stats["xp"]
                 xp = kimak + kampung
                 kung = stats["messagecount"] + 1
@@ -125,9 +125,38 @@ class levelsys(commands.Cog):
                     gambar = stats["image_url"]
                     levelling.update_one({"id": message.author.id}, {
                         "$set": {"level": lvl}})
-                    for i in range(len(level)):
-                        if lvl == levelnum[i]:
-                            await message.author.add_roles(discord.utils.get(message.author.guild.roles, name=level[i]))
+                    if debus == 1:
+                        await message.author.add_roles(discord.utils.get(message.author.guild.roles, name='thug'))
+                    if debus == 5:
+                        await message.author.add_roles(discord.utils.get(message.author.guild.roles, name='hustler'))
+                        await message.author.remove_roles(discord.utils.get(message.author.guild.roles, name='thug'))
+                    if debus == 10:
+                        await message.author.add_roles(discord.utils.get(message.author.guild.roles, name='soldier'))
+                        await message.author.remove_roles(discord.utils.get(message.author.guild.roles, name='hustler'))
+                    if debus == 15:
+                        await message.author.add_roles(discord.utils.get(message.author.guild.roles, name='trigger'))
+                        await message.author.remove_roles(discord.utils.get(message.author.guild.roles, name='soldier'))
+                    if debus == 20:
+                        await message.author.add_roles(discord.utils.get(message.author.guild.roles, name='enforcer'))
+                        await message.author.remove_roles(discord.utils.get(message.author.guild.roles, name='trigger'))
+                    if debus == 25:
+                        await message.author.add_roles(discord.utils.get(message.author.guild.roles, name='facilitator'))
+                        await message.author.remove_roles(discord.utils.get(message.author.guild.roles, name='enforcer'))
+                    if debus == 30:
+                        await message.author.add_roles(discord.utils.get(message.author.guild.roles, name='public enemy'))
+                        await message.author.remove_roles(discord.utils.get(message.author.guild.roles, name='facilitator'))
+                    if debus == 35:
+                        await message.author.add_roles(discord.utils.get(message.author.guild.roles, name='shot caller'))
+                        await message.author.remove_roles(discord.utils.get(message.author.guild.roles, name='public enemy'))
+                    if debus == 40:
+                        await message.author.add_roles(discord.utils.get(message.author.guild.roles, name='street boss'))
+                        await message.author.remove_roles(discord.utils.get(message.author.guild.roles, name='shot caller'))
+                    if debus == 45:
+                        await message.author.add_roles(discord.utils.get(message.author.guild.roles, name='right hand'))
+                        await message.author.remove_roles(discord.utils.get(message.author.guild.roles, name='street boss'))
+                    if debus == 50:
+                        await message.author.add_roles(discord.utils.get(message.author.guild.roles, name='active'))
+                        await message.author.remove_roles(discord.utils.get(message.author.guild.roles, name='right hand'))
 
                 xp -= ((50*((lvl-1)**2))+(50*(lvl-1)))
                 if xp == 0:
@@ -175,7 +204,7 @@ class levelsys(commands.Cog):
                         break
                 # Replace infoimgimg.png with your background image.
                 if member.id == 351147060956889088:
-                    img = Image.open("assets/rank.png")
+                    img = Image.open("assets/template/1.png")
                 elif member.id == 678302535202635797:
                     img = Image.open("assets/premium/meh.png")
                 elif member.id == 494870400153550859:
