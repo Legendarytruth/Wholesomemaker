@@ -134,7 +134,16 @@ async def on_member_join(member):
     await client.add_roles(member, role)  # Gives the role to the user
     await member.send(newUserMessage)
 """
-
+#When the server icon or name changes.
+@client.event
+async def on_guild_update(before, after):
+    iconmessage = 'The server icon has changed.'
+    namemessage = 'The server name has changed'
+    bot_c = client.get_channel(bot_channel)
+    if(before.icon != after.icon):
+        await bot_c.send(iconmessage)
+    if(before.name != after.name):
+        await bot_c.send(namemessage)
 
 # New member join message
 @client.event
