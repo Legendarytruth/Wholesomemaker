@@ -23,9 +23,7 @@ intents.members = True
 client = commands.Bot(command_prefix=['/', '!'], intents=intents)
 slash = SlashCommand(client, sync_commands=True)
 client.remove_command("help")
-
 # adding slash commands
-
 
 @slash.slash(name="load", description="Load a Module")
 @commands.has_role(845497466249412628)
@@ -124,15 +122,125 @@ newUserMessage = """
 Hi! Welcome to the Wholesome Series Videos official Discord server!
 Please read the rules and be respectful.
 """
+bot_channel = 808958457855344640 #channel that the bot will write too
 
 
+#Old member join message
+"""
 @client.event
 async def on_member_join(member):
-
     # Gets the member role as a `role` object
     role = discord.utils.get(member.server.roles, name="non verified")
     await client.add_roles(member, role)  # Gives the role to the user
     await member.send(newUserMessage)
+"""
+
+
+# New member join message
+@client.event
+async def on_member_join(member):
+    message = '{0.mention} has joined the server.'
+    bot_c = client.get_channel(bot_channel)
+    embed = discord.Embed(title= newUserMessage)
+    await member.send(embed=embed)
+    await bot_c.send(message.format(member))
+
+# Logging if a user leaves
+@client.event
+async def on_member_remove(member):
+    message = '{0.mention} has left/been kicked from the server.'
+    bot_c = client.get_channel(bot_channel)
+    await bot_c.send(message.format(member))
+
+# when a channel is deleted (The name auto changes to #deleted-channel)
+@client.event
+async def on_guild_channel_delete(channel):
+    message = '{0.mention} has been deleted from the server.'
+    bot_c = client.get_channel(bot_channel)
+    await bot_c.send(message.format(channel.name))
+
+# when a channel is created
+@client.event
+async def on_guild_channel_create(channel):
+    message = '{0.mention} has been created from the server.'
+    bot_c = client.get_channel(bot_channel)
+    await bot_c.send(message.format(channel))
+
+# when a channel name is updated
+@client.event
+async def on_guild_channel_update(before, after):
+    message = '{} has been renamed to {}.'
+    bot_c = client.get_channel(bot_channel)
+    if(before.name != after.name):
+        await bot_c.send(message.format(before.name, after.name))
+
+# These are for private channels
+
+#when a private channel is deleted (The name auto changes to #deleted-channel)
+@client.event
+async def on_private_channel_delete(channel):
+    message = '{} has been deleted from the server.'
+    bot_c = client.get_channel(bot_channel)
+    await bot_c.send(message.format(channel.name))
+
+#when a private channel is created
+@client.event
+async def on_private_channel_create(channel):
+    message = '{0.mention} has been created from the server.'
+    bot_c = client.get_channel(bot_channel)
+    await bot_c.send(message.format(channel))
+
+#when a private channel name is updated
+@client.event
+async def on_private_channel_update(before, after):
+    message = '{} has been renamed to {}.'
+    bot_c = client.get_channel(bot_channel)
+    if(before.name != after.name):
+        await bot_c.send(message.format(before.name, after.name))
+
+
+#when a user has a role added or deleted
+@client.event
+async def on_member_update(before, after):
+    addedRole = '{} has gained the role {}.'
+    deletedRole = '{} has lost the role {}.'
+    bot_c = client.get_channel(bot_channel)
+    if(before.roles != after.roles):
+        beforelist = before.roles
+        afterlist = after.roles
+        if(len(before.roles) > len(after.roles)):
+            for i in beforelist:
+                 if i not in afterlist:
+                    role = i
+            await bot_c.send(deletedRole.format(before.name, role.name))
+        else:
+            for i in afterlist:
+                 if i not in beforelist:
+                    role = i
+            await bot_c.send(addedRole.format(before.name, role.name))
+
+
+#when a new role is created
+@client.event
+async def on_guild_role_create(role):
+    message = 'The role {0.mention} has been created.'
+    bot_c = client.get_channel(bot_channel)
+    await bot_c.send(message.format(role))
+
+#when a new role is deleted
+@client.event
+async def on_guild_role_delete(role):
+    message = 'The role {} has been deleted.'
+    bot_c = client.get_channel(bot_channel)
+    await bot_c.send(message.format(role.name))
+
+#when a new role has its color changed
+@client.event
+async def on_guild_role_update(before, after):
+    message = 'The role {} has changed from {} to {}.'
+    bot_c = client.get_channel(bot_channel)
+    if(before.color != after.color):
+        await bot_c.send(message.format(after.name, before.color, after.color))
 
 
 @ client.event
