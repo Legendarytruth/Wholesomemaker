@@ -100,14 +100,14 @@ class levelsys(commands.Cog):
 
         if not message.author.bot:
             if stats is None:
-                memek = random.randint(30, 50)
+                memek = random.randint(5, 20)
                 # memek = = random.randint(5, 20)
                 newuser = {"id": message.author.id,
                            "xp": memek, "username": message.author.name, "discrim": message.author.discriminator, "messagecount": 1, "image_url": imgp, "level": 0}
                 levelling.insert_one(newuser)
 
             else:
-                kampung = random.randint(30, 50)
+                kampung = random.randint(5, 20)
                 kimak = stats["xp"]
                 xp = kimak + kampung
                 kung = stats["messagecount"] + 1
@@ -120,9 +120,6 @@ class levelsys(commands.Cog):
                     if xp < ((50*(lvl**2))+(50*lvl)):
                         break
                     lvl += 1
-                    ekspi = stats["xp"]
-                    hitungpesan = stats["messagecount"]
-                    gambar = stats["image_url"]
                     levelling.update_one({"id": message.author.id}, {
                         "$set": {"level": lvl}})
                     if debus == 1:
@@ -395,7 +392,9 @@ class levelsys(commands.Cog):
     async def top(self, ctx: SlashContext):
         if (ctx.channel.id == bot_channel):
             button = create_button(5, label='Go to your leaderboard',
-                                   url='https://wsv-leaderboards1.herokuapp.com/')
+                                   url='https://wsv.matthewsoft.eu.org/')
+            # button = create_button(5, label='Go to your leaderboard',
+            #                        url='https://wsv-leaderboards1.herokuapp.com/')
             # button = create_button(5, label='Go to your leaderboard',
             # url='https://wholesome-discord-server-2.herokuapp.com/')
             # button = create_button(5, label='Go to your leaderboard',
